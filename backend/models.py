@@ -27,7 +27,8 @@ class Details(BaseModel):
     class Config:
         extra = "forbid"
 
-
+class Files(BaseModel):
+    filename: str
 
 
 

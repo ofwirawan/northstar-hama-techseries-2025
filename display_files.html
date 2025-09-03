@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    File name<input type="text" name="filename" id="filename">
+    <input type="submit" value="Submit" onclick="retrieveDocument()">
+</body>
+<script>
+    async function retrieveDocument(){
+        try{
+            filename = document.getElementById("filename").value;
+            postBody = {filename: filename}
+            const response = await fetch("http://127.0.0.1:8000/get_files/",
+                {method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(postBody)
+                }
+            );
+            if(!response.ok){
+                throw new Error("ERROR bodo");
+            }
+
+            const blob = await response.blob(); // convert binary stream to Blob
+            const url = URL.createObjectURL(blob);
+
+            if(filename.endsWith(".pdf")){
+                newEmbed = document.createElement("embed");
+                newEmbed.src = url;
+                document.body.appendChild(newEmbed)
+            } else {
+                newImg = document.createElement("img");
+                newImg.src = url;
+                document.body.appendChild(newImg);
+            }
+        } catch (e){
+            console.error(e);
+        }
+
+    }
+</script>
+</html>

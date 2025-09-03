@@ -1,20 +1,14 @@
-<<<<<<< HEAD
-from fastapi import FastAPI, Depends, UploadFile
-=======
-from fastapi import FastAPI, Depends, File, UploadFile
->>>>>>> 8742f6d6753d7ad6d543b99f30ddca49654fea26
+from fastapi import FastAPI, Depends, File, UploadFile, Form
+from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from database import DatabaseManager
-from bson import ObjectId
-from models import User, Language
+from bson import ObjectId, Binary
+from models import User, Language, Files
 from contextlib import asynccontextmanager
-from pathlib import Path
+from io import BytesIO
 
 # Creates a new DatabaseManager object
 dbMgr = DatabaseManager()
-
-# Change Upload Directory later
-UPLOAD_DIRECTORY = "backend/uploaded_files"
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -33,22 +27,21 @@ async def get_db():
 # whitelist your IP in mongodb atlas network access as well
 # ^^ msg me
 
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=["http://localhost:3000"],  # Your React app URL
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Your React app URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # TO DO LIST <<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-# manage lifespan of app (close db connections and such)
 # read up on collation (language specific mongodb stuff)
 
 
 # notes:
-# .model_dump() any path parameters in post or get
+# .model_dump() any path parameters from get or post
 # before inserting to db
 # to prevent error
 # all code below are for EXAMPLES
@@ -58,19 +51,33 @@ async def root():
     return {"message": "Hello World"}
 
 @app.post('/upload_files/')
-async def upload_file(file : UploadFile):
-    Path(UPLOAD_DIRECTORY).mkdir(parents=True, exist_ok=True)
+async def upload_file(file : UploadFile = File(...), name: str = Form(...), db=Depends(get_db)):
+    # read the file using the UploadFile.read() method
+    content = await file.read()
 
-    file_location = Path(UPLOAD_DIRECTORY) / file.filename
-    with open(file_location, "wb") as buffer:
-        while True:
-            chunk = await file.read(1024 * 1024)  # Read in 1MB chunks
-            if not chunk:
-                break
-            buffer.write(chunk)
-    return {"info": f"File '{file.filename}' uploaded successfully to '{file_location}'"}
+    # inserts the filename, file binary, and content type to mongodb
+    await db.files.insert_one({"filename": file.filename, "content": Binary(content), "content_type": file.content_type})
+    return {"status": "ok"}
 
-@app.post("/user/signup/") # can post to this endpoint to trigger this func
+@app.post('/get_files/')
+async def get_file(file: Files, db=Depends(get_db)):
+    # file is an object with 1 property: filename which has a value of str
+    doc = await db.files.find_one({"filename": file.filename})
+
+    # Wrap the binary content from MongoDB in a BytesIO object
+    # BytesIO allows Python to treat raw bytes like a file object,
+    # which is required for streaming responses
+    file_stream = BytesIO(doc["content"])       
+
+    # Return a StreamingResponse to send the file back to the client
+    # StreamingResponse streams the file content instead of loading it all into memory at once
+    return StreamingResponse(
+        file_stream,                        # the binary data of the document
+        media_type=doc["content_type"]     # e.g., "image/png" or "image/jpeg"
+        # ,headers={"Content-Disposition": f"inline; filename={doc['filename']}"}  # "inline" to display in Swagger API (http://localhost:8000/docs)
+    )
+
+@app.post("/user/signup/") # can post to this endpoint to trigger this function
 async def add_user(user: User, db=Depends(get_db)):
     try:
         result = await db.users.insert_one(user.model_dump())
@@ -80,10 +87,10 @@ async def add_user(user: User, db=Depends(get_db)):
         raise e
 
 @app.put("/user/update/{user_id}")
-async def update_user(user_id: str, pref_lang: str, db=Depends(get_db)):
+async def update_user(user_id: str, pref_lang: Language, db=Depends(get_db)):
     try:
         # always convert user_id to an ObjectId when dealing with the db
-        await db.users.update_one({"_id" : ObjectId(user_id)}, {"$set": {"pref_lang": pref_lang}})
+        await db.users.update_one({"_id" : ObjectId(user_id)}, {"$set": {"pref_lang": pref_lang.value}})
         return {"status_code": 200}
 
     except Exception as e:
@@ -108,7 +115,3 @@ async def find_user(pref_lang: str, db=Depends(get_db)):
     
     return {"data": results}
 
-@app.post("/uploadfiles/")
-async def upload_files(file: UploadFile | None = None):
-    if not file:
-        print("no file uploaded")
