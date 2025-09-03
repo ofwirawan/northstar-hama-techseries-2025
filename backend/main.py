@@ -1,10 +1,13 @@
 from fastapi import FastAPI, Depends, File, UploadFile, Form
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
-from database import DatabaseManager
 from bson import ObjectId, Binary
+
+
+from database import DatabaseManager
 from models import User, Language, Files
 from contextlib import asynccontextmanager
+from fileparser import parse_files_to_text
 from io import BytesIO
 
 # Creates a new DatabaseManager object
@@ -114,4 +117,13 @@ async def find_user(pref_lang: str, db=Depends(get_db)):
         document["_id"] = str(document["_id"])
     
     return {"data": results}
+
+@app.post("/parse_file/{filename}")
+async def parse_file(file : Files, db=Depends(get_db)):
+    doc = await db.files.find_one({"filename": file.filename})
+    file_stream = BytesIO(doc["content"])
+    text_data = await parse_files_to_text(file_stream)
+
+    return text_data
+
 
