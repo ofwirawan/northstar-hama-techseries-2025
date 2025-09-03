@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from database import DatabaseManager
 from bson import ObjectId
@@ -86,3 +86,8 @@ async def find_user(pref_lang: str, db=Depends(get_db)):
         document["_id"] = str(document["_id"])
     
     return {"data": results}
+
+@app.post("/uploadfiles/")
+async def upload_files(file: UploadFile | None = None):
+    if not file:
+        print("no file uploaded")
