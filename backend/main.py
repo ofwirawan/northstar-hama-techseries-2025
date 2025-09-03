@@ -51,7 +51,7 @@ async def root():
     return {"message": "Hello World"}
 
 @app.post('/upload_files/')
-async def upload_file(file : UploadFile = File(...), name: str = Form(...), db=Depends(get_db)):
+async def upload_file(file : UploadFile = File(...), db=Depends(get_db)):
     # read the file using the UploadFile.read() method
     content = await file.read()
 
