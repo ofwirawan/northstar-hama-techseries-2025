@@ -1,12 +1,20 @@
+<<<<<<< HEAD
 from fastapi import FastAPI, Depends, UploadFile
+=======
+from fastapi import FastAPI, Depends, File, UploadFile
+>>>>>>> 8742f6d6753d7ad6d543b99f30ddca49654fea26
 from fastapi.middleware.cors import CORSMiddleware
 from database import DatabaseManager
 from bson import ObjectId
 from models import User, Language
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 # Creates a new DatabaseManager object
 dbMgr = DatabaseManager()
+
+# Change Upload Directory later
+UPLOAD_DIRECTORY = "backend/uploaded_files"
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -48,6 +56,19 @@ async def get_db():
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
+
+@app.post('/upload_files/')
+async def upload_file(file : UploadFile):
+    Path(UPLOAD_DIRECTORY).mkdir(parents=True, exist_ok=True)
+
+    file_location = Path(UPLOAD_DIRECTORY) / file.filename
+    with open(file_location, "wb") as buffer:
+        while True:
+            chunk = await file.read(1024 * 1024)  # Read in 1MB chunks
+            if not chunk:
+                break
+            buffer.write(chunk)
+    return {"info": f"File '{file.filename}' uploaded successfully to '{file_location}'"}
 
 @app.post("/user/signup/") # can post to this endpoint to trigger this func
 async def add_user(user: User, db=Depends(get_db)):
