@@ -18,20 +18,24 @@ If you are developing a production application, we recommend using TypeScript wi
 
 ## Steps
 
-1. **Start WSL** in the project directory.  
-2. **Activate the virtual environment**:
+1. **Start WSL** in the project directory.
+2. **Create a new venv**
+    ```bash
+    python3 -m venv .venv
+3. **Activate the virtual environment**:
    ```bash
    source .venv/bin/activate
    ```
-3. **Install dependencies** (only if not yet installed):
+4. **Install dependencies** (only if not yet installed):
    ```bash
    pip install -r requirements.txt
    ```
-4. **Start the backend**:
+5. **Start the backend**:
    ```bash
    fastapi dev backend/main.py
    ```
-5. **Test file upload**  
+6. **Test file upload**  
    Open **`uploadfiles.html`** and try uploading files.
-6. **View uploaded files**  
+   This will display the original uploaded file, and the text string that was parsed from it
+7. **View uploaded files**  
    Open **`display_files.html`**, then enter the filename **with extension** (case-sensitive).
