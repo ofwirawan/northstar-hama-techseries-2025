@@ -15,10 +15,11 @@ If you are developing a production application, we recommend using TypeScript wi
 
 ## Prerequisites
 - Ensure you have **WSL (Windows Subsystem for Linux)** installed.
+- Or use MACOS
 
 ## Steps
 
-1. **Start WSL** in the project directory.
+1. **Start WSL** in the project directory (if you are on Windows) or start your terminal on Mac
 2. **Create a new venv**
     ```bash
     python3 -m venv .venv
