@@ -3,11 +3,11 @@ from dataclasses import dataclass, field
 from typing import List
 import pathlib
 
-from .chunker import chunk_text
-from .retriever import BM25Retriever
-from .translator import translate_text, answer_from_context
-from .prompts import SUMMARY_SYSTEM_PROMPT, SUMMARY_USER_PROMPT, CHAT_SYSTEM_PROMPT, CHAT_USER_PROMPT
-from . import config
+from chunker import chunk_text
+from retriever import BM25Retriever
+from translator import translate_text, answer_from_context
+from prompts import SUMMARY_SYSTEM_PROMPT, SUMMARY_USER_PROMPT, CHAT_SYSTEM_PROMPT, CHAT_USER_PROMPT
+import config
 
 def _clean_output(s: str) -> str:
     return (s or "").replace("**", "").strip()

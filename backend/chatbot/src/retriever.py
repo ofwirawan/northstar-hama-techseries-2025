@@ -1,4 +1,3 @@
-
 from rank_bm25 import BM25Okapi
 
 def simple_tokenize(s: str):
