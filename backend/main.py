@@ -3,7 +3,7 @@ from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from bson import ObjectId, Binary
 
-
+## Internal imports
 from database import DatabaseManager
 from models import User, Language, Files
 from contextlib import asynccontextmanager
@@ -124,6 +124,9 @@ async def parse_file(file : Files, db=Depends(get_db)):
     file_stream = BytesIO(doc["content"])
     text_data = await parse_files_to_text(file_stream)
 
-    return text_data
+    ret = ""
+    for i, text in enumerate(text_data):
+        ret += f"\n--- Text from Page {i+1} ---\n"
+        ret += f"{text}\n"
 
 
