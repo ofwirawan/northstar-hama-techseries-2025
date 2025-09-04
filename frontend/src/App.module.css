@@ -1,0 +1,21 @@
+#root {
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.app {
+  text-align: center;
+}
+
+.appContainer {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.mainContent {
+  width: 100%;
+  height: 100vh;
+  overflow: auto;
+}
