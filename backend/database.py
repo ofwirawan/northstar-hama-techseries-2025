@@ -34,8 +34,8 @@ class DatabaseManager():
             print(e)
             return False
 
-    def close_connection(self):
+    async def close_connection(self):
         if self.client:
-            self.client.close()
+            await self.client.close()
             print("Database Connection Closed")
 

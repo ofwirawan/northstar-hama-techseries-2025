@@ -6,9 +6,12 @@ from bson import ObjectId, Binary
 from models import User, Language, Files
 from contextlib import asynccontextmanager
 from io import BytesIO
+from parse_files_to_text.parse_files import extract_text
+
 
 # Creates a new DatabaseManager object
 dbMgr = DatabaseManager()
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -53,16 +56,20 @@ async def root():
 @app.post('/upload_files/')
 async def upload_file(file : UploadFile = File(...), db=Depends(get_db)):
     # read the file using the UploadFile.read() method
-    content = await file.read()
-
+    # content = await file.read()
+    text = await extract_text(file)
+    # print(text)
+    return {"text": text}
     # inserts the filename, file binary, and content type to mongodb
     await db.files.insert_one({"filename": file.filename, "content": Binary(content), "content_type": file.content_type})
+
     return {"status": "ok"}
 
 @app.post('/get_files/')
 async def get_file(file: Files, db=Depends(get_db)):
     # file is an object with 1 property: filename which has a value of str
     doc = await db.files.find_one({"filename": file.filename})
+    
 
     # Wrap the binary content from MongoDB in a BytesIO object
     # BytesIO allows Python to treat raw bytes like a file object,
