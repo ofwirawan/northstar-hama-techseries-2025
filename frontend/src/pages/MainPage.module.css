@@ -1,0 +1,319 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.container {
+    min-height: 100vh;
+    background: rgba(234, 239, 239, 1);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+/* Header with user greeting */
+.headerGreeting {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    width: fit-content;
+    background: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    color: #4a90a4;
+    font-weight: 500;
+    opacity: 0;
+    animation: fadeInSlide 0.8s ease-out 0.3s forwards;
+}
+
+/* Main content wrapper */
+.mainContent {
+    width: 100%;
+    text-align: center;
+    margin-top: 4rem;
+}
+
+/* Brand title */
+.mainTitle {
+    font-size: 4rem;
+    font-weight: 700;
+    color: rgba(51, 52, 70, 1);
+    font-style: italic;
+    opacity: 0;
+    animation: fadeInUp 1s ease-out 0.1s forwards;
+}
+
+/* Subtitle */
+.subtitle {
+    font-size: 3.5rem;
+    color: rgba(51, 52, 70, 1);
+    margin-bottom: 1rem;
+    font-weight: 400;
+    opacity: 0;
+    animation: fadeInUp 1s ease-out 0.3s forwards;
+}
+
+/* Language change button */
+.languageButton {
+    background: rgba(184, 207, 206, 1);
+    color: rgba(51, 52, 70, 1);
+    border: black 2 px solid;
+    max-width: 300px;
+    width: fit-content;
+    padding: 0.75rem 2rem;
+    border-radius: 2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeInScale 0.8s ease-out 0.5s forwards;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.languageButton:hover {
+    background: #38a169;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+}
+
+.languageButton:active {
+    transform: translateY(0);
+}
+
+/* Globe icon for language button */
+.languageButton::before {
+    content: '🌐';
+    font-size: 1.1rem;
+}
+
+/* Feature cards container */
+.featuresContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Individual feature card */
+.featureCard {
+    background: rgba(51, 52, 70, 1);
+    border-radius: 1rem;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    box-shadow: 0 8px 25px rgba(44, 82, 130, 0.2);
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: all 0.3s ease;
+}
+
+.featureCard:nth-child(1) {
+    animation: slideInLeft 0.8s ease-out 0.7s forwards;
+}
+
+.featureCard:nth-child(2) {
+    animation: slideInLeft 0.8s ease-out 0.9s forwards;
+}
+
+.featureCard:hover {
+    transform: translateY(-5px) translateX(0);
+    box-shadow: 0 12px 35px rgba(44, 82, 130, 0.3);
+}
+
+/* Feature card icon container */
+.featureIcon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Icon styles */
+.documentIcon {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 0.25rem;
+    position: relative;
+    z-index: 1;
+}
+
+.documentIcon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 24px;
+    height: 24px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%234a90a4' viewBox='0 0 24 24'%3E%3Cpath d='M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z'/%3E%3C/svg%3E");
+    background-size: contain;
+}
+
+.chatIcon {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50%;
+    position: relative;
+    z-index: 1;
+}
+
+.chatIcon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 24px;
+    height: 24px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%234a90a4' viewBox='0 0 24 24'%3E%3Cpath d='M9,22A1,1 0 0,1 8,21V18H4A2,2 0 0,1 2,16V4C2,2.89 2.9,2 4,2H20A2,2 0 0,1 22,4V16A2,2 0 0,1 20,18H13.9L10.2,21.71C10,21.9 9.75,22 9.5,22V22H9Z'/%3E%3C/svg%3E");
+    background-size: contain;
+}
+
+/* Feature card content */
+.featureContent {
+    flex: 1;
+    text-align: left;
+}
+
+.featureTitle {
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.featureDescription {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInSlide {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .headerGreeting {
+        position: relative;
+        top: 0;
+        right: 0;
+        margin-bottom: 2rem;
+    }
+
+    .mainContent {
+        margin-top: 1rem;
+    }
+
+    .brandTitle {
+        font-size: 2.5rem;
+    }
+
+    .subtitle {
+        font-size: 1.5rem;
+    }
+
+    .featureCard {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem;
+    }
+
+    .featureContent {
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .brandTitle {
+        font-size: 2rem;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+    }
+
+    .featureCard {
+        padding: 1rem;
+    }
+
+    .featureIcon {
+        width: 60px;
+        height: 60px;
+    }
+}
