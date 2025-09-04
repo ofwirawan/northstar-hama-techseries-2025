@@ -17,6 +17,16 @@
     position: relative;
 }
 
+.blurOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background: rgba(0,0,0,0.25);
+  pointer-events: none;
+}
+
 /* Header with user greeting */
 .headerGreeting {
     position: absolute;
@@ -91,10 +101,9 @@
     transform: translateY(0);
 }
 
-/* Globe icon for language button */
-.languageButton::before {
-    content: '🌐';
-    font-size: 1.1rem;
+.featureIcon.languageIcon{
+    height: 24px;
+    width: 24px;
 }
 
 /* Feature cards container */
@@ -109,11 +118,11 @@
 /* Individual feature card */
 .featureCard {
     background: rgba(51, 52, 70, 1);
-    border-radius: 1rem;
+    border-radius: 3rem;
     padding: 2rem;
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
     box-shadow: 0 8px 25px rgba(44, 82, 130, 0.2);
     opacity: 0;
     transform: translateX(-50px);
@@ -135,8 +144,8 @@
 
 /* Feature card icon container */
 .featureIcon {
-    width: 40px;
-    height: 40px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -197,7 +206,7 @@
 
 .featureTitle {
     color: white;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
     line-height: 1.3;
@@ -205,8 +214,22 @@
 
 .featureDescription {
     color: rgba(255, 255, 255, 0.9);
-    font-size: 0.95rem;
+    font-size: 0.75rem;
     line-height: 1.5;
+}
+
+.dragWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5); 
+  pointer-events: auto;
 }
 
 /* Animations */
