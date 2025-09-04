@@ -66,12 +66,7 @@ useEffect(() => {
 return (
 <React.Fragment>
 {isUploadingFile && (
-    <div 
-      className={styles.blurOverlay}
-      onClick={() => {
-        setIsUploadingFile(false);
-      }}
-    />
+    <div className={styles.blurOverlay}/>
 )
 }
 
