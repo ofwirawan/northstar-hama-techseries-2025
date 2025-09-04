@@ -3,43 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    File name<input type="text" name="filename" id="filename">
-    <input type="submit" value="Submit" onclick="retrieveDocument()">
-</body>
-<script>
-    async function retrieveDocument(){
-        try{
-            filename = document.getElementById("filename").value;
-            postBody = {filename: filename}
-            const response = await fetch("http://127.0.0.1:8000/get_files/",
-                {method: "POST",
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(postBody)
-                }
-            );
-            if(!response.ok){
-                throw new Error("ERROR bodo");
-            }
-
-            const blob = await response.blob(); // convert binary stream to Blob
-            const url = URL.createObjectURL(blob);
-
-            if(filename.endsWith(".pdf")){
-                newEmbed = document.createElement("embed");
-                newEmbed.src = url;
-                document.body.appendChild(newEmbed)
-            } else {
-                newImg = document.createElement("img");
-                newImg.src = url;
-                document.body.appendChild(newImg);
-            }
-        } catch (e){
-            console.error(e);
+    <title>File Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
         }
 
-    }
-</script>
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+            width: 250px;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 6px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        embed, img {
+            margin-top: 20px;
+            max-width: 90%;
+            max-height: 500px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <input type="text" name="filename" id="filename" placeholder="Enter file name">
+        <input type="submit" value="Submit" onclick="retrieveDocument()">
+        <div id="content"></div>
+    </div>
+
+    <script>
+        async function retrieveDocument() {
+            try {
+                const content = document.getElementById("content");
+                const filename = document.getElementById("filename").value;
+                const postBody = { filename };
+
+                const response = await fetch("http://127.0.0.1:8000/get_files/", {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(postBody)
+                });
+
+                if (!response.ok) throw new Error("Error fetching file");
+
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+
+                if (filename.endsWith(".pdf")) {
+                    const newEmbed = document.createElement("embed");
+                    newEmbed.src = url;
+                    content.innerHTML = "";
+                    content.appendChild(newEmbed);
+                } else {
+                    const newImg = document.createElement("img");
+                    newImg.src = url;
+                    content.innerHTML = "";
+                    content.appendChild(newImg);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    </script>
+</body>
 </html>
