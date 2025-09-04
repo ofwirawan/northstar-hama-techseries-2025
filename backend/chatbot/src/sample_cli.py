@@ -1,7 +1,7 @@
 
 import argparse, pathlib, sys
-from .chatbot import DocumentChatbot
-from . import config
+from chatbot import DocumentChatbot
+import config
 
 USER_UPLOADED_TXT = """Employment Contract
 Position: Service Crew

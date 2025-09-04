@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 ocr_api_key = os.getenv("OCR_SPACE_API_KEY")
+# print(ocr_api_key)
 ocr_api_endpoint = "https://api.ocr.space/parse/image/"
 
 
@@ -18,28 +19,26 @@ ocr_api_endpoint = "https://api.ocr.space/parse/image/"
 # this is if we directly parse user form data and use FastAPI's UploadFile properties
 async def extract_text(file):
     file_stream = file.file
-    
+    text = ""
     # block of code to process pdf
     if file.content_type == "application/pdf":
         # returns an accessible pdf with pages that can be accessed from .page
         pdf = PyPDF2.PdfReader(file_stream)
-        text = ""
         for pages in pdf.pages:
             # extract_text extracts text from each PAGE
             text += pages.extract_text() + "\n"
-        
-        return text
+
     
     # block of code to process images
     elif file.content_type.startswith("image/"):
         image_bytes = await file.read()
         text = parse_image_to_text(image_bytes, file.content_type)
-        return text
+    
+    return text
 
 # parse image from file stream
 def parse_image_to_text(image_bytes, file_type):
     try:
-        # result = OCRReader.readtext(image_bytes)
         file_extension = file_type.split('/')[1].upper()
 
         if file_extension not in ["PDF", "GIF", "PNG", "JPG", "TIF", "BMP"]:
@@ -70,7 +69,7 @@ def parse_image_to_text(image_bytes, file_type):
         # print(json.dumps(data))
 
         # request body to OCR.space uses the data param, not json
-        response = requests.post(ocr_api_endpoint, data=data, timeout=30)   
+        response = requests.post(ocr_api_endpoint, data=data)   
         result = response.json()
 
         # raise error if bad request
