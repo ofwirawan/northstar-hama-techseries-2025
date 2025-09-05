@@ -14,10 +14,11 @@ const MainPage = () => {
 
   const handleFileParsed = (parsed) => {
     localStorage.setItem('parsedDoc', JSON.stringify(parsed));
+    // Navigate to feature page instead of conversation
     navigate('/conversation', { state: { parsed }, replace: true });
     setIsUploadingFile(false);
   };
-
+  
   return (
     <>
       {isUploadingFile && <div className={styles.blurOverlay} />}
