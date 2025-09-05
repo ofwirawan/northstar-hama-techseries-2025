@@ -37,6 +37,7 @@ import {useEffect, useState} from "react";
 import searchIcon from "/Users/lenov/OneDrive/Documents/GitHub/northstar-hama-techseries-2025/frontend/src/assets/change-language-translation-assets/search.svg";
 
 
+// the page is meant to be viewed in 1440 x 1080 aspect ratio.
 
 const App = () => {
   const [input, setInput] = useState("");
@@ -73,7 +74,7 @@ const App = () => {
     <div>
       <i><h4 id='NorthStar'> NorthStar</h4></i>
       <div className="heading">
-        <div className='buttons'><img src="src/assets/left.svg"></img></div>
+        <form method="post" action="index.html"><button className='buttons'><img src={leftIcon}></img></button></form>
         <h1>AI Document Translation & Analyzer Tool</h1>
       </div>
       <div id="boxes">

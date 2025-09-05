@@ -33,9 +33,13 @@
 // } // use arrow components
 // props or properties are a way to pass data from one component to the other (arguments passed to a function)
 
+import leftIcon from "/Users/lenov/OneDrive/Documents/GitHub/northstar-hama-techseries-2025/frontend/src/assets/change-language-translation-assets/left.svg";
+
+// the page is meant to be viewed in 1440 x 1080 aspect ratio.
+
 const Language = ({language}) => {
   return (
-    <form method="post">
+    <form method="post" action="index.html">
       <button className='card'>
         <p>{ language }</p>
       </button>
@@ -49,7 +53,7 @@ const App = () => {
     <div>
       <i><h4 id='NorthStar'> NorthStar</h4></i>
       <div className="heading">
-        <div className='buttons'><img src="../../alan-frontend-src/left.svg"></img></div>
+        <form action="index.html" method="post"><button className='buttons'><img src={leftIcon}></img></button></form>
         <h1>Change Language</h1>
       </div>
       <div className='languages'>
