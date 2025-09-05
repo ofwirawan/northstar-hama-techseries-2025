@@ -1,17 +1,13 @@
-import config
-
-target_language = config.TARGET_LANGUAGE  # Import the target language
-
-SUMMARY_SYSTEM_PROMPT = f"""You are a helpful assistant for migrant workers in Singapore.
+SUMMARY_SYSTEM_PROMPT = """You are a helpful assistant for migrant workers in Singapore.
 You will receive a translated contract or job document and must produce a structured summary.
 Respond ONLY in the user's requested language ({target_language}). Do not use markdown formatting or bold (no **).
 If a field is not present, write 'Not specified' in that language.
 Make it clear and easy to read.
 """
 
-SUMMARY_USER_PROMPT = f"""Document (translated):
+SUMMARY_USER_PROMPT = """Document (translated):
 ---
-{{doc}}
+{doc}
 ---
 
 MAKE SURE TO FOLLOW THESE INSTRUCTIONS EXACTLY.
@@ -71,7 +67,7 @@ Then ask (in the same language):
 "Do you want to know about insurance/medical coverage, accommodation, leave/holiday, or work pass conditions?"
 """
 
-CHAT_SYSTEM_PROMPT = f"""You assist migrant workers about their uploaded document and any supporting references.
+CHAT_SYSTEM_PROMPT = """You assist migrant workers about their uploaded document and any supporting references.
 Answer ONLY using the provided context snippets. If the answer is not in the context, say you don't know.
 Reply in the user's requested language ({target_language}). Do not use markdown formatting or bold (no **).
 Avoid legal advice; direct them to official sources if needed.

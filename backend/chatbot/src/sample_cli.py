@@ -46,7 +46,7 @@ def main():
         uploaded_txt = USER_UPLOADED_TXT
 
     
-    print(f"\n[1/3] Translating to: {config.TARGET_LANGUAGE}")
+    print(f"\n[1/3] Translating to: {config.TARGET_LANGUAGE[bot.target_language]}")
     translated = bot.ingest_text(uploaded_txt)
     print("\n=== Translated Document (preview) ===")
     print(translated[:800])

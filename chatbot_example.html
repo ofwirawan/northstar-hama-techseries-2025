@@ -183,7 +183,7 @@
                 this.sendButton = document.getElementById('sendButton');
                 this.loadingIndicator = document.getElementById('loadingIndicator');
                 this.sessionId = null;
-
+                this.last_message = ""
                 this.initializeEventListeners();
                 this.initializeChatbot();
             }
@@ -249,17 +249,23 @@
                     this.showLoading();
 
                     // Send message to backend
-                    const response = await fetch('http://127.0.0.1:8000/chatbot/message', {
+                    const response = await fetch('http://127.0.0.1:8000/chatbot/msg/', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
                             message: message,
-                            sessionId: this.sessionId
+                            lang: "id",
+                            last_message: this.last_message
                         })
                     });
 
+                    console.log({
+                            message: message,
+                            lang: "id",
+                            last_message: this.last_message
+                        })
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
@@ -268,6 +274,7 @@
 
                     // Add bot response to chat
                     this.addBotMessage(data.message);
+                    this.last_message = data.message
 
                 } catch (error) {
                     console.error('Error sending message:', error);

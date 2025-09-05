@@ -1,20 +1,20 @@
-
 import os
 from dotenv import load_dotenv
 import google.generativeai as genai
+from concurrent.futures import ThreadPoolExecutor
 
 load_dotenv()
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
 
-def _get_model():
-    if not GOOGLE_API_KEY:
-        return None
+model = None
+
+if GOOGLE_API_KEY:
     genai.configure(api_key=GOOGLE_API_KEY)
-    return genai.GenerativeModel(GEMINI_MODEL)
+    model = genai.GenerativeModel(GEMINI_MODEL)
 
 def translate_text(text: str, target_language: str) -> str:
-    model = _get_model()
+    global model
     prompt = (
         f"Translate the following text into {target_language}. "
         "Keep structure (headings, lists) where possible. "
@@ -33,7 +33,7 @@ def translate_text(text: str, target_language: str) -> str:
             return ""
 
 def answer_from_context(system_prompt: str, user_prompt: str) -> str:
-    model = _get_model()
+    global model
     if model is None:
         return "[DEBUG] No GOOGLE_API_KEY. Would answer with system+user prompts."
     prompt = system_prompt + "\n\n" + user_prompt
