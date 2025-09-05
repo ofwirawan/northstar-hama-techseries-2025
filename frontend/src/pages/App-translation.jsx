@@ -55,9 +55,10 @@ const App = () => {
 
   const handleTranslate = async () => {
     try {
-        const response = await fetch("http://localhost:8000/", {
-          method: "GET",
-          headers: { "Content-Type": "application/json" }
+        const response = await fetch("http://127.0.0.1:8000/chatbot/init/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({lang: "id"})
         });
 
         const data = await response.json();
