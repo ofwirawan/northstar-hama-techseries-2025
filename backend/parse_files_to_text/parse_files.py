@@ -2,23 +2,14 @@ import os
 import base64
 import PyPDF2
 import requests
-import scrubadub, scrubadub_stanford
-
 from io import BytesIO
 from dotenv import load_dotenv
-
-import nltk
-nltk.download('punkt_tab')
 
 # exports env variables 
 load_dotenv()
 
-detector = scrubadub_stanford.detectors.StanfordEntityDetector
-scrubber = scrubadub.Scrubber()
-scrubber.add_detector(detector)
-
-
 ocr_api_key = os.getenv("OCR_SPACE_API_KEY")
+# print(ocr_api_key)
 ocr_api_endpoint = "https://api.ocr.space/parse/image/"
 
 
@@ -43,7 +34,7 @@ async def extract_text(file):
         image_bytes = await file.read()
         text = parse_image_to_text(image_bytes, file.content_type)
     
-    return scrubber.clean(text)
+    return text
 
 # parse image from file stream
 def parse_image_to_text(image_bytes, file_type):
