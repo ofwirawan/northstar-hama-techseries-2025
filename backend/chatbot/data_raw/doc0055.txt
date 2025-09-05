@@ -1,0 +1,57 @@
+Source: https://www.mom.gov.sg/passes-and-permits/work-permit-for-foreign-worker/cancel-a-work-permit
+Accessed: 2025-09-05
+Title: Cancel a WP
+Category: core_wp
+HTTP: 200
+
+You must cancel a Work Permit if your worker no longer works for you.
+At a glance
+|
+When to cancel the Work Permit |
+Within 1 week after the last day of notice.
+You do not need to cancel the pass if:
+- The pass holder becomes a Singapore permanent resident.
+- The pass has expired. As long as the pass holder is still in Singapore, you need to request for a Special Pass to give them a valid stay in the meantime. Otherwise, an overstaying fine will be imposed.
+Note: Your worker’s levy will be charged until 1 day before the pass cancellation.
+|
+|
+Who can cancel
+|
+Employer or employment agent |
+|
+How long it takes
+|
+Within 3 working days |
+| When levy stops
+|
+1 day before cancellation |
+Note: If your worker has left Singapore and will not return to work for you, you must cancel the Work Permit within 1 week from the departure date.
+Before cancelling
+As an employer, you need to:
+- Give your worker reasonable notice on their upcoming repatriation.
+- Seek tax clearance from the Inland Revenue Authority of Singapore (IRAS) at least 1 month before your worker’s last day of employment.
+- Settle all outstanding employment issues that your worker may raise, including salary payments.
+- Ensure your worker has a valid passport.
+- Have a discussion and written agreement with your worker on the following before buying an air ticket:
+- Transit arrangements, such as connecting flights and layover hours
+- The allowance needed to sustain your worker during the transit
+- Buy an air ticket with check-in luggage and pay for all connecting transport costs to the international port of entry in your worker’s home country or the region nearest to their hometown. The departure date must be within 2 weeks from the Work Permit cancellation.
+Before booking the flight, please check:
+- Whether the airline has any requirements (such as health or visa) for boarding and ensure your worker complies with them. Otherwise, they may not be allowed to board.
+- The home country's or region's embassy website for entry requirements. Alternatively, you may refer to MFA’s travel guides.
+How to cancel
+- Log in to WP Online to cancel the Work Permit.
+- Print the Special Pass and give it to the worker. The Special Pass allows the worker to stay in Singapore for up to 14 days. It is linked to the scheduled departure date provided in WP Online.
+- The worker needs to show the Special Pass and a valid passport to the immigration officer when leaving Singapore.
+To avoid any consequences of overstaying, you must ensure the worker leaves before the Special Pass expires. For non-Malaysians, the security bond will usually be discharged 1 week after the worker's departure, and if all conditions are met.
+- Log in to WP Online to cancel the Work Permit.
+- Select “Worker has already left Singapore” as the cancellation reason from the drop-down list.
+You must cancel the Work Permit within 1 week of the departure date. For non-Malaysians, the security bond will be discharged within 2 weeks after we have verified that the worker has left Singapore, and if all conditions are met.
+After cancelling
+Once the Work Permit is cancelled, your worker cannot work, even while waiting to leave Singapore. Your worker’s levy will be charged until 1 day before the cancellation.
+Once the Work Permit is cancelled, please cut the card in half and discard it to prevent misuse.
+Consequences of overstaying
+If your worker is still in Singapore, please ensure that they have a valid legal stay throughout. Otherwise, an overstaying fine will be imposed.
+It is also a criminal offence for:
+- Foreigners to remain beyond the expiry date of a visa
+- Companies to employ foreigners without a valid work pass

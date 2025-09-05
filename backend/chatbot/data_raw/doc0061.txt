@@ -1,0 +1,9 @@
+Source: https://www.mom.gov.sg/faq/employment-agencies/how-will-foreign-workers-know-the-amount-that-they-are-expected-to-pay-the-singapore-ea
+Accessed: 2025-09-05
+Title: EA worker fee cap (FAQ)
+Category: ea_fees
+HTTP: 200
+
+Singapore employment agencies (EAs) are allowed to collect no more than 1 month of a worker’s fixed-monthly salary for each year of service, capped at 2 months' salary. This fee cap is in place to protect vulnerable workers who may not have bargaining powers.
+Foreign workers can refer to the in-principle approval (IPA) letter that MOM issues to them before their arrival in Singapore. The IPA letter includes details such as a worker’s fixed-monthly salary and fees paid to the Singapore EA.
+It is an offence for an EA to charge excessive agency fees. Workers who are being overcharged can contact MOM for assistance. All information will be kept strictly confidential.

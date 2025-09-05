@@ -35,7 +35,8 @@
 
 import {useEffect, useState} from "react";
 import searchIcon from "/Users/lenov/OneDrive/Documents/GitHub/northstar-hama-techseries-2025/frontend/src/assets/change-language-translation-assets/search.svg";
-
+import leftIcon from "/Users/lenov/OneDrive/Documents/GitHub/northstar-hama-techseries-2025/frontend/src/assets/change-language-translation-assets/left.svg";
+import expandIcon from "/Users/lenov/OneDrive/Documents/GitHub/northstar-hama-techseries-2025/frontend/src/assets/change-language-translation-assets/expand.svg";
 
 
 const App = () => {
@@ -73,7 +74,7 @@ const App = () => {
     <div>
       <i><h4 id='NorthStar'> NorthStar</h4></i>
       <div className="heading">
-        <div className='buttons'><img src="src/assets/left.svg"></img></div>
+        <div className='buttons'><img src={leftIcon}></img></div>
         <h1>AI Document Translation & Analyzer Tool</h1>
       </div>
       <div id="boxes">
@@ -81,7 +82,7 @@ const App = () => {
             <div id='box-header'>
               <h1><div id='h1inbox'>Translated Text</div></h1>
               <div className='buttons' style={{width: "230px", height: "54.95px", marginRight: "10px"}}>
-                <img id="expand"src="src/assets/expand.svg"></img>
+                <img id="expand"src={expandIcon}></img>
                 <b><p>See original text</p></b>
               </div>
             </div>
