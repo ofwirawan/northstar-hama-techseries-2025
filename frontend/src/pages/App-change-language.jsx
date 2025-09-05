@@ -36,9 +36,9 @@
 const Language = ({language}) => {
   return (
     <form method="post">
-      <div className='card'>
+      <button className='card'>
         <p>{ language }</p>
-      </div>
+      </button>
     </form>
   )
 }
