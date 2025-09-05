@@ -2,8 +2,6 @@ import os
 import base64
 import PyPDF2
 import requests
-import scrubadub, scrubadub_spacy
-
 from io import BytesIO
 from dotenv import load_dotenv
 
@@ -17,9 +15,6 @@ ocr_api_endpoint = "https://api.ocr.space/parse/image/"
 
 # PyPDF2 documentation: https://pypi.org/project/PyPDF2/
 # OCR.space documentation: https://ocr.space/OCRAPI
-
-scrubber = scrubadub.Scrubber
-scrubber.add_detector(scrubadub_spacy.detectors.SpacyEntityDetector)
 
 # this is if we directly parse user form data and use FastAPI's UploadFile properties
 async def extract_text(file):
@@ -39,7 +34,7 @@ async def extract_text(file):
         image_bytes = await file.read()
         text = parse_image_to_text(image_bytes, file.content_type)
     
-    return scrubber.clean(text)
+    return text
 
 # parse image from file stream
 def parse_image_to_text(image_bytes, file_type):

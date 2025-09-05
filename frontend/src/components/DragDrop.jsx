@@ -90,12 +90,13 @@ const DragDrop = ({isProcessingFile, setIsProcessingFile, handleFileParsed}) => 
       const result = await response.json();
 
       setProcessedText(result.text);
-      setOriginalFileUrl(URL.createObjectURL(selectedFile));
+      const objectUrl = URL.createObjectURL(selectedFile);
+      setOriginalFileUrl(objectUrl);
 
       const payload = {
         text: result.text,
         file: selectedFile,
-        objectUrl,
+        objectUrl: objectUrl,
         originalFileName: selectedFile.name,
         mimeType: selectedFile.type,
         size: selectedFile.size,

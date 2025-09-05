@@ -14,17 +14,11 @@ const MainPage = () => {
 
   const handleFileParsed = (parsed) => {
     localStorage.setItem('parsedDoc', JSON.stringify(parsed));
+    // Navigate to feature page instead of conversation
     navigate('/conversation', { state: { parsed }, replace: true });
     setIsUploadingFile(false);
   };
-
-  const handleFileParsed = ({ text, file, objectUrl }) => {
-    setParsedText(text);
-    setPreviewUrl(objectUrl);   // <img src={previewUrl} />
-    // when done:
-    // URL.revokeObjectURL(objectUrl);
-  };
-
+  
   return (
     <>
       {isUploadingFile && <div className={styles.blurOverlay} />}
