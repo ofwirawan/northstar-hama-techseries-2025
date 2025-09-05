@@ -10,10 +10,7 @@ email-validator==2.3.0
 fastapi==0.116.1
 fastapi-cli==0.0.10
 fastapi-cloud-cli==0.1.5
-<<<<<<< HEAD
-=======
 google==3.0.0
->>>>>>> e783efe (merge from main)
 google-ai-generativelanguage==0.6.15
 google-api-core==2.25.1
 google-api-python-client==2.181.0
@@ -41,10 +38,7 @@ pyasn1_modules==0.4.2
 pydantic==2.11.7
 pydantic_core==2.33.2
 Pygments==2.19.2
-<<<<<<< HEAD
 pymongo==4.14.1
-=======
->>>>>>> e783efe (merge from main)
 pyparsing==3.2.3
 PyPDF2==3.0.1
 python-dotenv==1.1.1
