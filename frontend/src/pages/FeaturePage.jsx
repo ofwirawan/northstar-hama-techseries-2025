@@ -1,168 +1,226 @@
 import React, { useMemo, useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import styles from './FeaturePage.module.css'
+import styles from './FeaturePage.module.css';
+import { FilePreview } from '../components/FilePreview';
+
+// Local assets (adjust paths if yours differ)
+import leftIcon from '../assets/change-language-translation-assets/left.svg';
+import expandIcon from '../assets/change-language-translation-assets/expand.svg';
+import searchIcon from '../assets/change-language-translation-assets/search.svg';
 
 const FeaturePage = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const [filename, setFilename] = useState("");
-  const [fileUrl, setFileUrl] = useState("");
-  const [fileType, setFileType] = useState("");
-  const [isOriginalText, setIsOriginalText] = useState(false);
 
+  // --- UI state ---
+  const [filename, setFilename] = useState('');
+  const [fileUrl, setFileUrl] = useState('');
+  const [fileType, setFileType] = useState('');
+  const [showOriginal, setShowOriginal] = useState(false);
+
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState('');
+
+  // Text from backend (demo endpoint)
+  const [translated, setTranslated] = useState('');
+
+  // Prefer router state, fall back to localStorage
   const parsed = useMemo(() => {
     if (state?.parsed) return state.parsed;
     const saved = localStorage.getItem('parsedDoc');
     return saved ? JSON.parse(saved) : null;
   }, [state]);
 
+  // Redirect if no parsed payload
   useEffect(() => {
     if (!parsed) {
       navigate('/', { replace: true });
-    } else {
-      // Set file information when parsed data is available
-      if (parsed.file || parsed.originalFileName) {
-        setFilename(parsed.originalFileName || parsed.file?.name || '');
-        setFileType(parsed.mimeType || parsed.file?.type || '');
-        if (parsed.objectUrl) {
-          setFileUrl(parsed.objectUrl);
-        } else if (parsed.file) {
-          // Create object URL if not already created
-          const url = URL.createObjectURL(parsed.file);
-          setFileUrl(url);
-          
-          // Cleanup function to revoke URL when component unmounts
-          return () => URL.revokeObjectURL(url);
-        }
-      }
     }
   }, [parsed, navigate]);
 
-  const toggleOriginalText = () => {
-    setIsOriginalText(!isOriginalText);
-  };
+  // Extract file preview info if available
+  useEffect(() => {
+    if (!parsed) return;
 
-  const renderFileContent = () => {
-    if (!fileUrl || !fileType) return <p>No file available</p>;
+    const name = parsed.originalFileName || parsed.file?.name || '';
+    const type = parsed.mimeType || parsed.file?.type || '';
+    setFilename(name);
+    setFileType(type);
 
-    if (fileType.startsWith('image/')) {
-      return (
-        <img 
-          src={fileUrl} 
-          alt={filename}
-          style={{ maxWidth: '100%', height: 'auto' }}
-        />
-      );
-    } else if (fileType === 'application/pdf') {
-      return (
-        <embed 
-          src={fileUrl} 
-          type="application/pdf"
-          style={{ width: '100%', height: '500px' }}
-        />
-      );
-    } else {
-      return <p>File type not supported for preview</p>;
+    let createdUrl = '';
+    if (parsed.objectUrl) {
+      setFileUrl(parsed.objectUrl);
+    } else if (parsed.file instanceof File) {
+      createdUrl = URL.createObjectURL(parsed.file);
+      setFileUrl(createdUrl);
+    }
+
+    return () => {
+      if (createdUrl) URL.revokeObjectURL(createdUrl);
+    };
+  }, [parsed]);
+
+  // Demo translate fetch
+  const handleTranslate = async () => {
+    try {
+      const res = await fetch('http://localhost:8000/', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const data = await res.json();
+      setTranslated(data.message ?? '');
+    } catch (err) {
+      console.error('Error fetching:', err);
+      setTranslated('Error loading message');
     }
   };
 
-  if (!parsed) return null;
+  const handleSend = (e) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+    setMessages((m) => [...m, input.trim()]);
+    setInput('');
+  };
 
-  const parsedText = typeof parsed === 'string' ? parsed : parsed?.text ?? '';
+  const renderFileContent = (fileUrl, fileType, filename) => {
+    if (!fileUrl || !fileType) return <p className={styles.muted}>No file available</p>;
+    if (fileType.startsWith('image/')) {
+      return <img src={fileUrl} alt={filename || 'Uploaded image'} className={styles.previewImage} />;
+    }
+    if (fileType === 'application/pdf') {
+      return <embed src={fileUrl} type="application/pdf" className={styles.pdfEmbed} />;
+    }
+    return <p className={styles.muted}>File type not supported for preview</p>;
+  };
+
+  if (!parsed) return null; // will navigate away
+
+  // Prefer explicit fields; fall back gracefully
+  const parsedText =
+    typeof parsed === 'string'
+      ? parsed
+      : parsed?.text ?? '';
+
+  const originalText =
+    typeof parsed?.originalText === 'string'
+      ? parsed.originalText
+      : parsed?.raw ?? '';
+
+  const summaryText =
+    parsed?.summary
+      ? parsed.summary
+      : translated || 'No summary yet. Click "Translate" to fetch a demo response.';
 
   return (
-    <div className={styles.page}>
-      <h4 className={styles.brand}>NorthStar</h4>
-
-      <div className={styles.heading}>
-        <button 
-          type="button" 
-          className={styles.iconButton} 
-          aria-label="Back"
-          onClick={() => navigate('/')}
+    <React.Fragment>
+    {showOriginal && (
+      <React.Fragment>
+        <div
+          className={styles.dragWrapper}
         >
-          <img
-            src={"src/assets/left.svg"} // or leftIcon
-            alt=""
-            className={styles.icon}
+          <FilePreview 
+            renderFileContent={renderFileContent} 
+            filename={filename} 
+            fileUrl={fileUrl} 
+            fileType={fileType} 
+            setShowOriginal={setShowOriginal}
+            showOriginal={showOriginal}
           />
-        </button>
-        <h1 className={styles.title}>AI Document Translation &amp; Analyzer Tool</h1>
-      </div>
+        </div>
+        <div className={styles.blurOverlay} />
+      </React.Fragment>
+    )}
+    
+    <div className={styles.page}>
+      {/* Header */}
+      <header className={styles.header}>
+        <div className={styles.headerLeft}>
+          <button
+            type="button"
+            className={styles.backButton}
+            onClick={() => navigate("/")}
+            aria-label="Go back"
+          >
+            <img src={leftIcon} alt="" />
+          </button>
+          <div className={styles.brandSection}>
+            <h4 className={styles.brand}>NorthStar</h4>
+            <h1 className={styles.title}>AI Document Translation & Analyzer Tool</h1>
+          </div>
+        </div>
+      </header>
 
-      <div className={styles.boxes}>
-        {/* Translated Text */}
-        <section className={styles.textbox}>
-          <header className={styles.boxHeader}>
-            <h1 className={styles.boxTitle}>
-              {isOriginalText ? 'Original File' : 'Translated Text'}
-            </h1>
-            <button 
-              type="button" 
-              className={styles.ctaButton}
-              onClick={toggleOriginalText}
-            >
-              <img
-                src={"src/assets/expand.svg"} // or expandIcon
-                alt=""
-                className={styles.icon}
-              />
-              <b className={styles.ctaLabel}>
-                {isOriginalText ? 'See translated text' : 'See original file'}
-              </b>
-            </button>
-          </header>
+      {/* Main Content */}
+      <main className={styles.mainContent}>
+        {/* Left Panel - Text */}
+        <section className={styles.textPanel}>
+          <div className={styles.panelHeader}>
+            <h2 className={styles.panelTitle}>
+              Translated Text
+            </h2>
+            <div className={styles.panelActions}>
+              <button
+                type="button"
+                className={styles.actionButton}
+                onClick={() => setShowOriginal((s) => !s)}
+                title={showOriginal ? 'See translated text' : 'See original text'}
+              >
+                <img src={expandIcon} alt="" />
+                <span>See original text</span>
+              </button>
+            </div>
+          </div>
 
           <div className={styles.textContent}>
-            {isOriginalText ? (
-              <div>
-                {filename && <p><strong>File:</strong> {filename}</p>}
-                {renderFileContent()}
-              </div>
-            ) : (
-              <div>
-                <p className={styles.paragraph}>{parsedText}</p>
-                {/* Remove this debug info in production */}
-                {/* <pre className={styles.pre}>{JSON.stringify(parsed, null, 2)}</pre> */}
-              </div>
-            )}
+            <p className={styles.textBody}>
+              {(translated || parsedText || '(no translated text yet)')}
+            </p>
           </div>
         </section>
 
-        {/* Summary + Chat */}
-        <div className={styles.greaterSummary}>
-          <section className={`${styles.textbox} ${styles.summaryBox}`}>
-            <header className={styles.boxHeader}>
-              <h1 className={styles.boxTitle}>Summary</h1>
-            </header>
-
-            <div className={styles.chatAi}>
-              <p><strong>Salary</strong></p>
-              <p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-
-              <p><strong>Working hours</strong></p>
-              <p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-
-              <p><strong>Weekend policy</strong></p>
-              <p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</p>
+        {/* Right Panel - Summary & Chat */}
+        <aside className={styles.rightPanel}>
+          {/* Summary Section */}
+          <section className={styles.summaryPanel}>
+            <div className={styles.panelHeader}>
+              <h2 className={styles.panelTitle}>Summary</h2>
             </div>
 
-            <div className={styles.chatUser}>
-              I want to ask something.
+            <div className={styles.summaryContent}>
+              {/* AI Summary */}
+              <div className={styles.aiMessage}>
+                {summaryText}
+              </div>
+
+              {/* User Messages */}
+              {messages.map((msg, idx) => (
+                <div key={idx} className={styles.userMessage}>
+                  {msg}
+                </div>
+              ))}
             </div>
           </section>
 
-          <div className={styles.chatbox}>
-            <img
-              src={"src/assets/search.svg"} // or searchIcon
-              alt=""
-              className={styles.searchIcon}
-            />
-            <span>Lorem ipsum dolor sit amet.</span>
-          </div>
-        </div>
-      </div>
+          {/* Chat Input */}
+          <form className={styles.chatForm} onSubmit={handleSend}>
+            <div className={styles.chatInputContainer}>
+              <textarea
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Ask anything..."
+                className={styles.chatInput}
+                rows="1"
+              />
+              <button type="submit" className={styles.sendButton} title="Send">
+                <img src={searchIcon} alt="Send" />
+              </button>
+            </div>
+          </form>
+
+        </aside>
+      </main>
     </div>
+    </React.Fragment>
   );
 };
 

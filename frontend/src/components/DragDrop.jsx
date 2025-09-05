@@ -71,6 +71,11 @@ const DragDrop = ({isProcessingFile, setIsProcessingFile, handleFileParsed}) => 
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
+  function limitConsecutiveNewlines(str) {
+    const normalized = str.replace(/\r\n?/g, "\n");
+    return normalized.replace(/(\n[ \t]*){3,}/g, "\n\n");
+  }
+
   const upload = async () => {
     if (!selectedFile) return;
 
@@ -94,13 +99,15 @@ const DragDrop = ({isProcessingFile, setIsProcessingFile, handleFileParsed}) => 
       setOriginalFileUrl(objectUrl);
 
       const payload = {
-        text: result.text,
+        text: limitConsecutiveNewlines(result.text), //max 2 consecutive /n to remove excessive spacing
         file: selectedFile,
         objectUrl: objectUrl,
         originalFileName: selectedFile.name,
         mimeType: selectedFile.type,
         size: selectedFile.size,
       };
+      console.log(payload, "PAYLOAD IS")
+
       handleFileParsed?.(payload);
     } catch (error) {
       console.error("Upload error:", error);

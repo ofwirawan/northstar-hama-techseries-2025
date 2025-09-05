@@ -1,0 +1,112 @@
+/* Full-screen layer so we can absolutely center the card */
+viewport {
+  position: fixed;
+  inset: 0;
+}
+
+/* Absolutely centered container */
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(880px, 92vw);
+}
+
+/* Card */
+.card {
+  background: #f5f7f4;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 24px;
+  padding: clamp(20px, 4vw, 32px);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Title */
+.title {
+  margin: 0 0 20px;
+  font-size: clamp(28px, 5vw, 36px);
+  font-weight: 700;
+  line-height: 1.1;
+  color: #2b2e3a;
+}
+
+
+/* Hidden input */
+.hiddenInput { display: none; }
+
+/* Small phones */
+@media (max-width: 420px) {
+  .dropZone { grid-template-columns: 1fr auto; }
+  .dzIcon { display: none; }
+}
+
+/* Wrapper tag selector fix for CSS Modules */
+viewport, .viewport { position: fixed; inset: 0; }
+
+/* ===== File Preview ===== */
+.filePreview {
+  background-color: #FAFFFC;
+  border: 1px solid #333446;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.previewHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  gap: 8px;
+}
+
+.fileInfo {
+  font-size: 12px;
+  color: #666;
+  text-align: right;
+}
+
+.previewBody {
+  max-height: 420px;
+  overflow: hidden;
+  border-radius: 1rem;
+}
+
+.previewBody img {
+  height: fit-content
+}
+
+.previewBody embed {
+  height: 420px;
+}
+
+.previewImage {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.pdfEmbed {
+  width: 100%;
+  height: 200px;
+  border: none;
+  border-radius: 8px;
+}
+
+.muted {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+  text-align: center;
+  padding: 20px;
+}
+
+doneButton {
+  height: 24px;
+  width: 24px;
+
+}

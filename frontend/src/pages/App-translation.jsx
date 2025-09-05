@@ -42,7 +42,8 @@ import searchIcon from "/Users/lenov/OneDrive/Documents/GitHub/northstar-hama-te
 const App = () => {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
-
+  const [translated, setTranslated] = useState("");
+  
   const handleSend = (e) => {
     e.preventDefault();
     if (input.trim() !== "") {
@@ -50,7 +51,7 @@ const App = () => {
       setInput("");
     }
   }
-  const [translated, setTranslated] = useState("");
+  
 
   const handleTranslate = async () => {
     try {
