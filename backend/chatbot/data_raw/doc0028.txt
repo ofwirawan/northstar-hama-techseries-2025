@@ -1,0 +1,10 @@
+Source: https://www.mom.gov.sg/eservices/calculators
+Accessed: 2025-09-05
+Title: Calculators hub
+Category: tools
+HTTP: 200
+
+You are using a version of browser which will not be supported after 27 May 2018. To continue to transact with MOM securely, please follow these steps to enable the Transport Layer Security (TLS) of your web browser, or upgrade to the latest version of your browser.
+PH pay, COMPASS, Primary Care Plan, myMOM Portal, paying salary, annual leave
+Use our online calculators to get quick answers.
+Use CheckSafe to check and compare companies’ WSH performance, including injury and enforcement data. You can make more informed choice for contractors or partners based on their WSH performance.

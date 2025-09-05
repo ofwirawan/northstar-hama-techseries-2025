@@ -1,0 +1,121 @@
+Source: https://www.mom.gov.sg/employment-practices/salary/monthly-and-daily-salary
+Accessed: 2025-09-05
+Title: Monthly & daily salary
+Category: salary
+HTTP: 200
+
+You may receive a monthly or daily salary. Daily wages are calculated using either the gross rate (for paid public holidays, paid leave, salary in lieu and salary deductions) or the basic rate (for work on rest days or public holidays).
+Monthly wages
+For calculating salary, a “month” or “complete month” refers to any one of the months in the calendar year.
+Calculate your pay for an incomplete month of work
+How an incomplete month pay is calculated
+Salary for an incomplete month of work is calculated as follows:
+Monthly gross rate of pay
+------------------------------------
+Total number of working days in that month
+|
+×
+|
+Total number of days the employee actually worked in that month
+|
+If you take no-pay leave
+If you are a monthly-rated full-time employee and took unpaid leave for the month, you should count it as an incomplete month of work to calculate your salary.
+Definitions
+|
+Half-day
+|
+When the number of hours worked in the day is 5 or less.
+|
+|
+One working day
+|
+When the number of hours worked in the day is more than 5.
+|
+|
+Incomplete month of work
+|
+Where an employee:
+- Starts work after the first day of the month.
+- Leaves employment before the last day of the month.
+- Takes no-pay leave of one or more days during the month.
+- Is on reservist training during the month.
+|
+|
+Monthly gross rate of pay
+|
+Total amount of money including allowances, payable for one month's work. This excludes:
+- Additional payments (overtime, bonus, AWS).
+- Reimbursement of special expenses incurred during the course of employment.
+- Productivity incentive payments.
+- Travel, food and housing allowances.
+|
+|
+Total no. of working days in the month
+|
+Excludes rest days and non-working days, but includes public holidays.
+For employees with fixed rest days on Sundays or non-working days on Saturdays, the total number of working days per month for year 2024 and 2025 is shown in this table.
+|
+|
+Total no. of days actually worked in the month
+|
+Includes public holidays, paid hospitalisation leave and annual leave, if entitled.
+|
+Basic rate of pay
+|
+How it is used
+|
+For calculating pay for work on a rest day or public holiday.
+|
+|
+What is included
+|
+Basic rate of pay includes wage adjustments and increments that an employee is entitled to under a contract of service.
+|
+|
+What is excluded
+|
+Basic rate of pay excludes:
+- Overtime payments, bonus payments and annual wage supplements (AWS).
+- Reimbursement of special expenses incurred in the course of employment.
+- Productivity incentive payments.
+- Any allowance.
+|
+How it is calculated
+For a monthly-rated employee, the basic rate of pay for 1 day is calculated as follows:
+12 × monthly basic rate of pay
+------------------------------------
+52 × average number of days an employee is required to work in a week
+|
+Gross rate of pay
+|
+How it is used
+|
+For calculating:
+- Salary in lieu of notice of termination of service.
+- Salary in lieu of annual leave.
+- Salary deduction for unauthorised absence from work.
+- Paid public holidays.
+- Approved paid leave, including annual leave, hospitalisation leave and maternity leave.
+|
+|
+What is included
+|
+Gross rate of pay includes allowances that an employee is entitled to under a contract of service
+|
+|
+What is excluded
+|
+Gross rate of pay excludes:
+- Overtime payments, bonus payments and annual wage supplements (AWS).
+- Reimbursement of special expenses incurred in the course of employment.
+- Productivity incentive payments.
+- Travel, food and housing allowances.
+|
+Calculate your gross rate of pay
+By using this service, you agree to accept the terms of use.
+How it is calculated
+For a monthly-rated employee, the gross rate of pay for 1 day is calculated as follows:
+12 × monthly gross rate of pay
+------------------------------------
+52 × average number of days an employee is required to work in a week
+|

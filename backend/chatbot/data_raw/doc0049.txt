@@ -1,0 +1,105 @@
+Source: https://www.mom.gov.sg/passes-and-permits/work-permit-for-foreign-worker/sector-specific-rules/process-sector-requirements
+Accessed: 2025-09-05
+Title: Process sector requirements
+Category: sectors
+HTTP: 200
+
+To employ migrant workers for the process sector, you will have to meet specific requirements for business activity, worker's source country or region, quota and safety courses.
+These requirements are additional and specific to the process sector. You should also refer to the general Work Permit conditions and requirements.
+Types of business activities
+The process sector includes plants in the manufacturing of petroleum, petrochemicals, specialty chemicals and pharmaceutical products.
+The production processes of these plants in the process sector involve specialised equipment and machinery. The construction and maintenance of the production units within these plants, which are classified as process construction and maintenance (PCM) works, require niche skills and expertise.
+Such works are carried out by PCM contractors. They work with the process plant owners and engineering, procurement and construction companies to build and maintain the production units of the process plants.
+Company requirements
+A business providing PCM services to plants must be a corporate member of the Association of the Process Industry (ASPRI). Before it can recruit foreign PCM workers, the business must also be endorsed by ASPRI as a PCM contractor and be included in the PCM Controlled List.
+For more information on membership and registration, refer to ASPRI’s website.
+Migrant worker eligibility
+You can only hire migrant workers who meet the conditions for source countries or regions and age requirements when applying.
+Source countries or regions
+You can employ migrant workers from these countries or regions:
+- Malaysia
+- People’s Republic of China (PRC)
+- Non-traditional sources (NTS):
+- India
+- Sri Lanka
+- Thailand
+- Bangladesh
+- Myanmar
+- Philippines
+- Bhutan
+- Cambodia
+- Laos
+- North Asian sources (NAS):
+- Hong Kong (HKSAR passport)
+- Macau
+- South Korea
+- Taiwan
+Age requirements
+The minimum age for all non-domestic migrant workers is 18 years old.
+When applying for a Work Permit, all non-domestic migrant workers (regardless of nationality) must be below 61 years old.
+Work Permit holders can work any number of years, and up to a maximum age of 63 years old.
+Worker requirements and approved occupations
+Migrant workers employed for PCM works are not allowed to be involved in the plant’s operations (operating plant equipment, warehousing and packing, etc.) or peripheral services (grass cutting, cleaning of offices, roads, waste disposal etc.).
+They can only perform activities related to the construction, preventive and breakdown maintenance of plant equipment.
+PCM works require these 13 skill sets:
+- Electrical and Instrumentation works
+- General fitting
+- Machine fitting
+- Metal Scaffolding
+- Painting and blasting
+- Plant civil works
+- Plant equipment fitting
+- Process pipefitting
+- Refractory
+- Rigging and material handling
+- Rotating equipment fitting
+- Thermal insulation
+- Welding
+NTS and PRC Work Permit holders in the process sector can only be employed as “Process Maintenance and Construction Worker”, “Process Maintenance Construction Worker-cum-Driver” or "Driver (Process)".
+Quota and levy
+The number of Work Permit holders that you can hire is limited by quota (or dependency ratio ceiling) and subject to a levy.
+Under the process sector quota, you can employ 5 Work Permit holders for every local employee who earns the Local Qualifying Salary.
+The levy rate is as follows:
+| Source country or region / Tier
+|
+Monthly
+|
+Daily
+|
+| NTS - Higher-skilled |
+$300
+|
+$9.87
+|
+| NTS - Basic-skilled |
+$650
+|
+$21.37 |
+| Malaysia, NAS, PRC - Higher-skilled |
+$200
+|
+$6.58 |
+| Malaysia, NAS, PRC - Basic-skilled |
+$450
+|
+$14.79 |
+Calculate your quota
+Note:
+- The daily levy rate only applies to Work Permit holders who did not work for a full calendar month. The daily levy rate is calculated as follows: (Monthly levy rate x 12) / 365 = rounding up to the nearest cent.
+- If there are changes to the skill status of your worker, the change in levy rate will start on the 1st of the month following the expiry date of the permit.
+Settling-in Programme
+Before their Work Permits can be issued, non-Malaysian Work Permit holders in the process sector must attend the Settling-in Programme (SIP) if they are either:
+- First time working in Singapore
+- Returning workers on in-principle approval (IPA)
+Required safety courses
+Workers employed in the process sector must take the following safety courses before starting work:
+- Oil Petroleum Safety Orientation Course (OPSOC) - All workers employed in the process sector must take the OPSOC.
+- Construction Safety Orientation Course (CSOC) - In addition to OPSOC, all workers employed to carry out the construction of process plants must also take the CSOC.
+You can find a training provider on our website.
+Steps for a Work Permit application
+When applying for a Work Permit, please complete the steps in this order:
+- Apply for a Work Permit and get an in-principle approval.
+- (Only required for non-Malaysian workers) Buy security bond.
+- Buy medical insurance and Primary Care Plan.
+See
+pass map for an overview of what you need to do before, during and after you apply for a Work Permit.

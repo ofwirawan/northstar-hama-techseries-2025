@@ -5,7 +5,7 @@ class Language(str, Enum):
     bangla = "bl"
     hindi = "hd"
     indonesian = "id"
-    tagalog = "tg"
+    filipino = "fp"
     malay = "my"
 
 class User(BaseModel):
@@ -30,6 +30,7 @@ class Details(BaseModel):
 class Files(BaseModel):
     filename: str
 
-
+class ChatbotInit(BaseModel):
+    lang: str
 
 

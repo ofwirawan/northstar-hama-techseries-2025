@@ -1,0 +1,113 @@
+Source: https://www.mom.gov.sg/passes-and-permits/employment-pass/eligibility
+Accessed: 2025-09-05
+Title: Employment Pass eligibility
+Category: ep
+HTTP: 200
+
+This criterion benchmarks your candidate’s salary against the local PMET salaries in your sector.
+It is different from the EP qualifying salary, which is the minimum bar that candidates need to pass to obtain an EP.
+Candidates who do not meet the EP qualifying salary will not be eligible for an EP, regardless of the points they would have scored under the C1 salary benchmark.
+How to earn points
+| Candidate's fixed monthly salary compared to salary benchmarks by sector |
+Points |
+| 90th percentile and above |
+20 |
+| 65th to less than 90th percentile |
+10 |
+| Below 65th percentile |
+0 |
+This criterion awards points to candidates based on their qualifications.
+If you do not need points from this criterion, you do not need to submit your candidate’s qualifications and verification proof.
+How to earn points
+| Candidate’s qualifications |
+Points |
+|
+Degree-equivalent qualifications from the following institutions:
+- Top 100 universities based on QS World University Rankings, and other highly-reputed universities in Asia
+- Singapore’s Autonomous Universities
+- Institutions that are highly-recognised in a particular field and endorsed by a relevant agency
+|
+20 |
+|
+Other degree-equivalent qualifications:
+- Foreign qualifications that are assessed to be comparable to a bachelor’s degree in the UK system. MOM determines this with reference to international recognition bodies, such as the UK National Information Centre for recognition and evaluation of international qualifications and skills (UK ENIC).
+- Professional qualifications that are well-recognised by the industry and endorsed by a relevant sector agency.
+|
+10 |
+|
+No degree-equivalent qualifications:
+- These qualifications will not earn any points under COMPASS. Do not submit them.
+Candidates without degree-equivalent qualifications can still pass COMPASS by earning a total score of at least 40 points from other criteria.
+|
+0 |
+Verification proof requirements
+If you need points from this criterion, you have to submit verification proof together with your candidate’s qualifications in your EP application.
+Otherwise, you do not need to submit your candidate’s qualifications and verification proof.
+This criterion awards more points to applications where the candidate’s nationality forms a small share of the firm’s PMET employees. A diverse mix of nationalities enriches firms with new ideas and networks, and contributes to a more inclusive and resilient workforce.
+How to earn points
+If your organisation employs:
+- Fewer than 25 PMETs, your application will score 10 points by default.
+- At least 25 PMETs, your points will depend on the share of your candidate’s nationality among your organisation’s PMETs.
+You can use the
+Workforce Insights tool on
+myMOM Portal to check the share of nationalities among your organisation’s PMETs.
+The nationality of your organisation’s employees (including Permanent Residents) is based on the nationality indicated on their passport in the Singapore Government’s records.
+Related questions:
+View all COMPASS-related questions
+This criterion recognises organisations that create opportunities for the local workforce and build complementary teams comprising both local and foreign professionals.
+How to earn points
+If your organisation employs:
+- Fewer than 25 PMETs, your application will score 10 points by default.
+- At least 25 PMETs, your points will depend on your organisation’s local PMET share relative to its sector.
+| Organisation's local PMET share relative to its sector |
+Points |
+| 50th percentile and above |
+20 |
+| 20th to less than 50th percentile |
+10 |
+| Below 20th percentile |
+0 |
+If your organisation’s local PMET share is at least 70% (pegged to the 20th percentile of organisations economy-wide), your application will score at least 10 points.
+This is regardless of where your organisation stands within its sector. In this way, we do not disadvantage organisations in sectors which have a relatively high share of local PMET employees.
+Related questions:
+View all COMPASS-related questions
+This bonus recognises jobs that require highly specialised skills, which are in shortage in the local workforce. The SOL is determined by a robust evaluation process that takes into account industry needs and local workforce development efforts.
+How to earn points
+| Skills bonus |
+Points |
+|
+|
+20 |
+- Job on the SOL
+- Share of candidate’s nationality among your organisation’s PMETs is 1/3 or more
+|
+10 |
+You can use the Workforce Insights tool on myMOM Portal to check the share of your candidate's nationality among your organisation's PMETs.
+To obtain the C5. Skills bonus:
+- Your candidate needs to perform the job duties listed for the specific shortage occupation.
+- You need to select one of the eligible job titles in your EP application.
+- Your candidate needs to meet checks on additional job requirements if they fall into either of these categories:
+- They need the SOL bonus points to pass COMPASS.
+- They are applying for a 5-year duration EP for a specific tech occupation on the SOL.
+Refer to the SOL Employer Guide to understand the additional requirements for EP candidates who require the SOL bonus points to pass COMPASS.
+We will check the candidate’s job duties, past work experience and qualifications or industry accreditation for the declared occupation.
+Redeployment to another occupation
+Candidates who needed SOL bonus points to pass COMPASS or obtain a longer duration EP can only be employed in the specific shortage occupation. This will be clearly stated in the in-principle approval (IPA) letter’s “Important” note.
+If they need to be redeployed to a different job, we will need to reassess if the candidate qualifies for an EP in the new job. You should notify MOM first, and we will then advise you on the next steps.
+Candidates who did not need SOL bonus points to pass COMPASS are not subjected to this restriction, but will still need to notify MOM.
+This bonus recognises organisations that are either:
+- Undertaking ambitious investment, innovation and internationalisation activities in partnership with economic agencies
+- Endorsed by National Trades Union Congress (NTUC) as strong partners on company and workforce transformation activities
+Singapore seeks to anchor and grow firms that can contribute to the innovative capacity of our economy, enhance our global linkages, and strengthen our economic competitiveness. Such firms should also have the scale or potential to provide good jobs for locals.
+How to earn points
+| Strategic Economic Priorities (SEP) bonus |
+Points |
+|
+Participate or meet the criteria for at least one of the eligible programmes |
+10 |
+The award of the SEP bonus will be at the discretion of the supporting agencies running the relevant programme. MOM will notify your organisation if it has been awarded the SEP bonus and the points will be reflected in the Self-Assessment Tool (SAT). You may approach the relevant supporting agency if you have any queries.
+Validity of SEP bonus points
+The bonus points will apply for up to 3 years, or for the duration of your organisation's participation in an eligible programme, whichever is shorter.
+Renewal eligibility for SEP bonus points
+At the end of the validity period, your supporting agency will reassess whether to continue supporting your organisation for the SEP bonus for a further duration. This renewal will be subject to your organisation’s continued participation in an eligible programme and meeting both of the following criteria:
+These criteria ensure that organisations eligible for the SEP bonus points make efforts to diversify and improve their workforce profile.

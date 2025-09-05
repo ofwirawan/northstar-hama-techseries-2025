@@ -6,6 +6,7 @@ If a field is not present, write 'Not specified' in that language.
 Make it clear and easy to read.
 """
 
+
 SUMMARY_USER_PROMPT = """Document (translated):
 ---
 {doc}
