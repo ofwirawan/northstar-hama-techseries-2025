@@ -18,6 +18,13 @@ const MainPage = () => {
     setIsUploadingFile(false);
   };
 
+  const handleFileParsed = ({ text, file, objectUrl }) => {
+    setParsedText(text);
+    setPreviewUrl(objectUrl);   // <img src={previewUrl} />
+    // when done:
+    // URL.revokeObjectURL(objectUrl);
+  };
+
   return (
     <>
       {isUploadingFile && <div className={styles.blurOverlay} />}

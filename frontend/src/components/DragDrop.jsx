@@ -94,6 +94,8 @@ const DragDrop = ({isProcessingFile, setIsProcessingFile, handleFileParsed}) => 
 
       const payload = {
         text: result.text,
+        file: selectedFile,
+        objectUrl,
         originalFileName: selectedFile.name,
         mimeType: selectedFile.type,
         size: selectedFile.size,
