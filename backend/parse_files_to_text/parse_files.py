@@ -7,19 +7,23 @@ import scrubadub, scrubadub_stanford
 from io import BytesIO
 from dotenv import load_dotenv
 
+import nltk
+nltk.download('punkt_tab')
+
 # exports env variables 
 load_dotenv()
 
+detector = scrubadub_stanford.detectors.StanfordEntityDetector
+scrubber = scrubadub.Scrubber()
+scrubber.add_detector(detector)
+
+
 ocr_api_key = os.getenv("OCR_SPACE_API_KEY")
-# print(ocr_api_key)
 ocr_api_endpoint = "https://api.ocr.space/parse/image/"
 
 
 # PyPDF2 documentation: https://pypi.org/project/PyPDF2/
 # OCR.space documentation: https://ocr.space/OCRAPI
-
-scrubber = scrubadub.Scrubber
-scrubber.add_detector(scrubadub_stanford.detectors.StanfordEntityDetector)
 
 # this is if we directly parse user form data and use FastAPI's UploadFile properties
 async def extract_text(file):
