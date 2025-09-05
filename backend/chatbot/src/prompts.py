@@ -1,4 +1,4 @@
-import config
+from . import config
 
 target_language = config.TARGET_LANGUAGE  # Import the target language
 
