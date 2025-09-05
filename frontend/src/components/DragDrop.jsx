@@ -1,16 +1,18 @@
 import React, { useRef, useState } from "react";
 import styles from "./DragDrop.module.css";
 import { ArrowUpFromLine, ChevronRight, Laptop } from "lucide-react";
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 const ACCEPTED_TYPES = ["application/pdf", "image/png", "image/jpeg", "image/jpg"];
 const ACCEPTED_EXTENSIONS = [".pdf", ".png", ".jpg", ".jpeg"];
 const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
 
-const DragDrop = () => {
+const DragDrop = ({isProcessingFile, setIsProcessingFile, handleFileParsed}) => {
   const [isDragActive, setIsDragActive] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [error, setError] = useState("");
-  const [isUploading, setIsUploading] = useState(false);
+  const [processedText, setProcessedText] = useState("");
+  const [originalFileUrl, setOriginalFileUrl] = useState("");
 
   const fileInputRef = useRef(null);
   const dropZoneRef = useRef(null);
@@ -30,7 +32,11 @@ const DragDrop = () => {
     }
     setError("");
     setSelectedFile(file);
+    // Clear previous results
+    setProcessedText("");
+    setOriginalFileUrl("");
   };
+  
 
   const onInputChange = (e) => {
     const file = e.target.files?.[0];
@@ -60,21 +66,44 @@ const DragDrop = () => {
   const removeFile = () => {
     setSelectedFile(null);
     setError("");
+    setProcessedText("");
+    setOriginalFileUrl("");
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const upload = async () => {
     if (!selectedFile) return;
-    setIsUploading(true);
+
+    setIsProcessingFile(true);
+    setError("");
+
     try {
-      // mock upload
-      await new Promise((r) => setTimeout(r, 1200));
-      alert("File uploaded successfully!");
-      removeFile();
-    } catch {
-      setError("Upload failed. Please try again.");
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+
+      const response = await fetch("http://127.0.0.1:8000/upload_files/", {
+        method: "POST",
+        body: formData,
+      });
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+      const result = await response.json();
+
+      setProcessedText(result.text);
+      setOriginalFileUrl(URL.createObjectURL(selectedFile));
+
+      const payload = {
+        text: result.text,
+        originalFileName: selectedFile.name,
+        mimeType: selectedFile.type,
+        size: selectedFile.size,
+      };
+      handleFileParsed?.(payload);
+    } catch (error) {
+      console.error("Upload error:", error);
+      setError(`Upload failed: ${error.message}. Please try again.`);
     } finally {
-      setIsUploading(false);
+      setIsProcessingFile(false);
     }
   };
 
@@ -88,63 +117,108 @@ const DragDrop = () => {
   return (
       <div className={styles.center}>
         <div className={styles.card}>
-          <h1 className={styles.title}>Translate Document</h1>
+          {!isProcessingFile ? (
+            <React.Fragment>
+            <h1 className={styles.title}>Translate Document</h1>
+            <div
+              ref={dropZoneRef}
+              className={`${styles.dropZone} ${isDragActive ? styles.dropZoneActive : ""}`}
+              onDragOver={onDragOver}
+              onDragLeave={onDragLeave}
+              onDrop={onDrop}
+              onClick={openPicker}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && openPicker()}
+            >
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept={ACCEPTED_EXTENSIONS.join(",")}
+                onChange={onInputChange}
+                className={styles.hiddenInput}
+              />
+              <span className={styles.dzIcon}>
+                <Laptop />
+              </span>
+              <span className={styles.dzText}>Upload from My Device</span>
+              <span className={styles.dzArrow}><ChevronRight/></span>
+            </div>
 
-          {/* Drop zone */}
-          <div
-            ref={dropZoneRef}
-            className={`${styles.dropZone} ${isDragActive ? styles.dropZoneActive : ""}`}
-            onDragOver={onDragOver}
-            onDragLeave={onDragLeave}
-            onDrop={onDrop}
-            onClick={openPicker}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && openPicker()}
-          >
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept={ACCEPTED_EXTENSIONS.join(",")}
-              onChange={onInputChange}
-              className={styles.hiddenInput}
-            />
-            <span className={styles.dzIcon}>
-              <Laptop />
-            </span>
-            <span className={styles.dzText}>Upload from My Computer</span>
-            <span className={styles.dzArrow}><ChevronRight/></span>
-          </div>
+            {/* Error */}
+            <div className={`${styles.error} ${error ? " " + styles.show : ""}`}>
+              {error}
+            </div>
 
-          {/* Error */}
-          <div className={`${styles.error} ${error ? " " + styles.show : ""}`}>
-            {error}
-          </div>
-
-          {/* Selected file */}
-          <div className={`${styles.fileCard} ${selectedFile ? " " + styles.show : ""}`}>
-            <div>
-              <div className={styles.fileName}>{selectedFile?.name}</div>
-              <div className={styles.fileMeta}>
-                {selectedFile ? `${fmtSize(selectedFile.size)} • ${selectedFile.type}` : ""}
+            {/* Selected file */}
+            <div className={`${styles.fileCard} ${selectedFile ? " " + styles.show : ""}`}>
+              <div>
+                <div className={styles.fileName}>{selectedFile?.name}</div>
+                <div className={styles.fileMeta}>
+                  {selectedFile ? `${fmtSize(selectedFile.size)} • ${selectedFile.type}` : ""}
+                </div>
               </div>
+              <button className={styles.removeBtn} onClick={removeFile} aria-label="Remove file">
+                ✕
+              </button>
             </div>
-            <button className={styles.removeBtn} onClick={removeFile} aria-label="Remove file">
-              ✕
-            </button>
-          </div>
 
-          {/* Upload button */}
-          <button
-            className={styles.uploadBtn}
-            onClick={upload}
-            disabled={!selectedFile || isUploading}
-          >
-            <div className={styles.uploadIcon}>
-              <ArrowUpFromLine /> 
-            </div>
-            Upload
-          </button>
+            {/* Upload button */}
+            <button
+              className={styles.uploadBtn}
+              onClick={upload}
+              disabled={!selectedFile || isProcessingFile}
+            >
+              <div className={styles.uploadIcon}>
+                <ArrowUpFromLine /> 
+              </div>
+              Upload
+            </button>
+
+            {/* Results section - only show if we have processed text */}
+            {processedText && (
+              <div className={styles.resultsSection}>
+                <h2 className={styles.resultsTitle}>Processing Results</h2>
+                
+                <div className={styles.resultsContainer}>
+                  <div className={styles.originalFile}>
+                    <h3>Original File</h3>
+                    {selectedFile?.type.startsWith("image/") ? (
+                      <img 
+                        src={originalFileUrl} 
+                        alt="Original file" 
+                        className={styles.previewImage}
+                      />
+                    ) : selectedFile?.type === "application/pdf" ? (
+                      <embed 
+                        src={originalFileUrl} 
+                        type="application/pdf" 
+                        className={styles.previewPdf}
+                      />
+                    ) : null}
+                  </div>
+                  
+                  <div className={styles.extractedText}>
+                    <h3>Extracted Text</h3>
+                    <div className={styles.textContent}>
+                      {processedText}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+          </React.Fragment>
+        ) : (
+          <div className={styles.loadingContainer}>
+            <DotLottieReact
+              src="https://lottie.host/f4e5c5f1-c1df-4eb6-b69f-2fbf7052af0f/YRWqBj0cSd.json"
+              loop
+              autoplay
+            />
+            <p className={styles.loadingText}>Processing your file...</p>
+          </div>
+        )}
         </div>
       </div>
   );
