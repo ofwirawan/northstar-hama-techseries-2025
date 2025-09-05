@@ -1,0 +1,40 @@
+Source: https://www.mom.gov.sg/passes-and-permits/s-pass/eligibility
+Accessed: 2025-09-05
+Title: S Pass eligibility
+Category: s_pass
+HTTP: 200
+
+Only eligible candidates will be considered for an S Pass. Criteria include earning a salary of at least $3,300, which is benchmarked against the top one-third of the local associate professionals and technicians (APT) salaries by age.
+Who is eligible
+The S Pass is for foreign employees across all nationalities or citizenships who:
+- Have a job offer in Singapore.
+- Earn a fixed monthly salary comparable to the top one-third of the local APT workforce by age, as shown below:
+| Sector |
+Existing qualifying salary for renewal of passes expiring from 1 Sep 2025 to 31 Aug 2026 |
+For new applications submitted from 1 Sep 2025 / For renewals of passes expiring from 1 Sep 2026 |
+All
+(except financial services)
+|
+$3,150
+(increases progressively with age from age 23, up to $4,650 at age 45 and above)
+|
+$3,300
+(increases progressively with age from age 23, up to $4,800 at age 45 and above)
+|
+Financial services
+|
+$3,650
+(increases progressively with age from age 23, up to $5,650 at age 45 and above) |
+$3,800
+(increases progressively with age from age 23, up to $5,650 at age 45 and above) |
+Qualifications
+Declaring qualifications is optional.
+If you do declare your candidates’ qualification in the work pass application, you are responsible for ensuring that your candidate’s qualification:
+- Is authentic
+- Was awarded by an accredited institution in the application form's drop-down list
+Use the Self-Assessment Tool (SAT) to check a candidate's eligibility before you apply.
+If the SAT shows that the candidate is not eligible, you shouldn’t apply for the S Pass because it will be rejected.
+If the SAT shows that the candidate is eligible, there is around a 90% chance that the candidate will get a pass.
+Passes for family members
+Pass holders who have a fixed monthly salary of at least $6,000, are eligible for a Dependant’s Pass for their spouse and children.
+Employers can submit the application together with the S Pass application or separately at a later date.

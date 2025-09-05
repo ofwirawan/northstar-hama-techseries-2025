@@ -32,6 +32,7 @@ Annex A: Job Scope Sheet
 
 def main():
     ap = argparse.ArgumentParser()
+    bot = DocumentChatbot("id")  # uses config.TARGET_LANGUAGE
     ap.add_argument("--file", help="Path to plain-text file (already extracted). If omitted, uses the example text.")
     args = ap.parse_args()
 
@@ -44,7 +45,7 @@ def main():
     else:
         uploaded_txt = USER_UPLOADED_TXT
 
-    bot = DocumentChatbot()  # uses config.TARGET_LANGUAGE
+    
     print(f"\n[1/3] Translating to: {config.TARGET_LANGUAGE}")
     translated = bot.ingest_text(uploaded_txt)
     print("\n=== Translated Document (preview) ===")
