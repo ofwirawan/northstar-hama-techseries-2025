@@ -1,0 +1,229 @@
+:global(*) {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+:global(body) {
+  padding: 60px;
+  margin-top: 0;
+  background-color: #EAEFEF;
+}
+
+.page {}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.brand {
+  color: #333446;
+  font-size: 29.12px;
+  margin: 0;
+}
+
+.title {
+  font-weight: normal;
+  font-size: 49.21px;
+  color: #333446;
+  margin: 0 0 0 8px;
+}
+
+.iconButton,
+.button {
+  width: 74px;
+  height: 60.79px;
+  border: 1.1px solid #000000;
+  border-radius: 31.47px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #B8CFCE;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.card {
+  width: 308px;
+  height: 78px;
+  border: 1.1px solid #000000;
+  border-radius: 31.47px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #B8CFCE;
+  margin-bottom: 17px;
+  font-size: 20px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  background-color: #333446;
+  color: #EAEFEF;
+}
+
+.columns {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.textbox {
+  width: 640px;
+  height: 589px;
+  border: 1.1px solid #000000;
+  border-radius: 31.47px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  background-color: #FAFFFC;
+  margin-bottom: 0;
+  padding: 40px;
+  overflow: auto;
+}
+
+.boxHeader {
+  height: 10%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.boxTitle {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.buttonLabel {
+  margin: 0 0 0 10px;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.textBody {
+  width: 100%;
+}
+
+.mono {
+  font-size: 30px;
+  color: #333446;
+}
+
+.rightCol {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.summaryBox {
+  width: 519.94px;
+  height: 489px;
+}
+
+.chatAi {
+  width: 455.78px;
+  border: 1.1px solid #000000;
+  border-radius: 31.47px 31.74px 31.74px 0px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  background-color: #EAEFEF;
+  margin-top: 30px;
+  padding: 5%;
+  font-size: 30px;
+  cursor: default;
+}
+
+.chatUser {
+  width: 455.78px;
+  border: 1.1px solid #000000;
+  border-radius: 31.47px 31.74px 0px 31.74px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  background-color: #333446;
+  margin-top: 30px;
+  padding: 5%;
+  font-size: 30px;
+  color: #FAFFFC;
+}
+
+.chatbox {
+  width: 559.94px;
+  height: auto;
+  min-height: 50px;
+  border: 1.1px solid #000000;
+  border-radius: 31.47px;
+  display: flex;
+  align-items: center;
+  background-color: #FAFFFC;
+  margin: 10px 0 0 10px;
+  padding: 20px;
+  font-size: 30px;
+  overflow: auto;
+  gap: 12px;
+}
+
+.textarea {
+  width: 350px;
+  height: 50px;
+  border: 0;
+  outline: none;
+  background-color: #FAFFFC;
+  margin: 0;
+  font-size: 30px;
+  resize: none;
+}
+
+.previewCard {
+  margin-top: 16px;
+  border: 1.1px solid #000000;
+  border-radius: 16px;
+  background: #FAFFFC;
+  padding: 16px;
+}
+
+.previewHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.previewBody {}
+
+.previewImage {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.pdfEmbed {
+  width: 100%;
+  height: 500px;
+  border: 0;
+}
+
+.muted {
+  color: #666;
+  font-size: 14px;
+}
+
+/* Icon helpers */
+#expand,
+#search {
+  /* legacy ids supported if needed; prefer using <img alt=""> only */
+  margin-right: 20px;
+}

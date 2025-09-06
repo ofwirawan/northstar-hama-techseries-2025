@@ -2,12 +2,13 @@ import React, { useRef, useState } from "react";
 import styles from "./DragDrop.module.css";
 import { ArrowUpFromLine, ChevronRight, Laptop } from "lucide-react";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import {translations} from "../assets/Translations.jsx"
 
 const ACCEPTED_TYPES = ["application/pdf", "image/png", "image/jpeg", "image/jpg"];
 const ACCEPTED_EXTENSIONS = [".pdf", ".png", ".jpg", ".jpeg"];
 const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
 
-const DragDrop = ({isProcessingFile, setIsProcessingFile, handleFileParsed}) => {
+const DragDrop = ({isProcessingFile, setIsProcessingFile, handleFileParsed, currentLanguage}) => {
   const [isDragActive, setIsDragActive] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [error, setError] = useState("");
@@ -18,8 +19,8 @@ const DragDrop = ({isProcessingFile, setIsProcessingFile, handleFileParsed}) => 
   const dropZoneRef = useRef(null);
 
   const validateFile = (file) => {
-    if (!ACCEPTED_TYPES.includes(file.type)) return "Please select a PDF, PNG, or JPG file";
-    if (file.size > MAX_FILE_SIZE) return "File size must be less than 15MB";
+    if (!ACCEPTED_TYPES.includes(file.type)) return translations[currentLanguage].mimeReject;
+    if (file.size > MAX_FILE_SIZE) return translations[currentLanguage].sizeReject;
     return null;
   };
 
@@ -71,6 +72,11 @@ const DragDrop = ({isProcessingFile, setIsProcessingFile, handleFileParsed}) => 
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
+  function limitConsecutiveNewlines(str) {
+    const normalized = str.replace(/\r\n?/g, "\n");
+    return normalized.replace(/(\n[ \t]*){3,}/g, "\n\n");
+  }
+
   const upload = async () => {
     if (!selectedFile) return;
 
@@ -94,13 +100,14 @@ const DragDrop = ({isProcessingFile, setIsProcessingFile, handleFileParsed}) => 
       setOriginalFileUrl(objectUrl);
 
       const payload = {
-        text: result.text,
+        text: limitConsecutiveNewlines(result.text), //max 2 consecutive /n to remove excessive spacing
         file: selectedFile,
         objectUrl: objectUrl,
         originalFileName: selectedFile.name,
         mimeType: selectedFile.type,
         size: selectedFile.size,
       };
+
       handleFileParsed?.(payload);
     } catch (error) {
       console.error("Upload error:", error);
@@ -144,7 +151,7 @@ const DragDrop = ({isProcessingFile, setIsProcessingFile, handleFileParsed}) => 
               <span className={styles.dzIcon}>
                 <Laptop />
               </span>
-              <span className={styles.dzText}>Upload from My Device</span>
+              <span className={styles.dzText}>{translations[currentLanguage].uploadFromComputer}</span>
               <span className={styles.dzArrow}><ChevronRight/></span>
             </div>
 
@@ -181,7 +188,7 @@ const DragDrop = ({isProcessingFile, setIsProcessingFile, handleFileParsed}) => 
             {/* Results section - only show if we have processed text */}
             {processedText && (
               <div className={styles.resultsSection}>
-                <h2 className={styles.resultsTitle}>Processing Results</h2>
+                <h2 className={styles.resultsTitle}>{translations[currentLanguage].fileProcessing}</h2>
                 
                 <div className={styles.resultsContainer}>
                   <div className={styles.originalFile}>
@@ -219,7 +226,7 @@ const DragDrop = ({isProcessingFile, setIsProcessingFile, handleFileParsed}) => 
               loop
               autoplay
             />
-            <p className={styles.loadingText}>Processing your file...</p>
+            <p className={styles.loadingText}>{translations[currentLanguage].fileProcessing}</p>
           </div>
         )}
         </div>
