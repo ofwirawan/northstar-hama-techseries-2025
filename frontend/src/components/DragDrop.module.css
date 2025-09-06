@@ -1,25 +1,29 @@
-/* Full-screen layer so we can absolutely center the card */
-viewport {
+/* ===== Modal overlay (fixed & centered) ===== */
+.overlay {
   position: fixed;
   inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  background: rgba(15, 23, 42, 0.42);
+  backdrop-filter: blur(4px);
 }
 
-/* Absolutely centered container */
+/* add/remove this on <body> when modal is open */
+.noScroll { overflow: hidden; }
+
 .center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: min(880px, 92vw);
+  justify-items: center;
 }
 
-/* Card */
+/* ===== Card (modal) ===== */
 .card {
+  width: min(720px, 92vw);
   background: #f5f7f4;
-  border: 1px solid rgba(0,0,0,0.2);
+  border: 1px solid rgba(0,0,0,0.18);
   border-radius: 24px;
   padding: clamp(20px, 4vw, 32px);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.18);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
@@ -32,57 +36,91 @@ viewport {
   color: #2b2e3a;
 }
 
-/* Drop zone (dark pill like the screenshot) */
+/* ===== Drop zone ===== */
 .dropZone {
-  background: rgba(51, 52, 70, 1);
-  color: rgba(234, 239, 239, 1);
-  border: black 1px solid;
-  border-radius: 1.3rem;
-  padding: 18px 22px;
+  position: relative;
+  overflow: hidden;
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: 1fr auto;
   align-items: center;
-  gap: 14px;
-  cursor: pointer;
-  user-select: none;
+
+  background: #333446;
+  color: #eaefef;
+
+  border: 1px solid #000;
+  border-radius: 14px;
+  padding: 16px 18px;
+
   min-height: 68px;
-  transition: transform .15s ease, background-color .15s ease, border-color .15s ease;
-  margin-bottom: clamp(60px, 16vh, 124px); /* big white space like screenshot */
+
+  transition:
+    min-height .38s cubic-bezier(.22,.61,.36,1),
+    border-color .28s ease,
+    border-width .28s ease,
+    transform .22s ease,
+    box-shadow .28s ease,
+    color .28s ease,
+    background-color .28s ease;
+  will-change: min-height, border-color, border-width, box-shadow, transform, color, background-color;
+}
+
+.dropZone::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #ffffff 0%, #f5f7f4 100%);
+  opacity: 0;
+  transition: opacity .45s cubic-bezier(.22,.61,.36,1);
+  z-index: 0;
 }
 
 .dropZoneActive {
-  background: #272a3a;
-  border-color: #8fb3ff;
-  transform: scale(1.01);
+  min-height: 300px;
+  border-color: #2b2e3a;
+  border-width: 2px;
+  transform: translateZ(0) scale(1.01);
+  box-shadow: inset 0 0 0 1px rgba(43,46,58,0.06), 0 2px 12px rgba(0,0,0,0.06);
+  color: #2b2e3a;
+  background-color: #e9edf3;
 }
+.dropZoneActive::after { opacity: 1; }
+
+.dropZone:focus-within { outline: 2px solid #64748b; outline-offset: 2px; }
+
+.dropZone > * { position: relative; z-index: 1; }
+
+.dzIcon, .dzArrow { display: inline-flex; align-items: center; justify-content: center; }
 
 .dzIcon {
+  width: fit-content;
+}
+.dzText { font-weight: 500; letter-spacing: .2px; font-size: clamp(16px, 2.4vw, 18px); }
+
+.dzWrapper {
   display: flex;
-  justify-self: center;
+  gap: 10px;
+}
+/* Center hint only visible in active state */
+.dropHint {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  display: none;
   align-items: center;
-  height: 24px;
-  width: 24px;
-  line-height: 1;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #2b2e3a;
 }
+.dropZoneActive .dropHint { display: flex; }
 
-.dzText {
-  font-weight: 400;
-  letter-spacing: .2px;
-  font-size: clamp(16px, 2.4vw, 18px);
-}
+/* Hidden input */
+.hiddenInput { display: none; }
 
-.dzArrow {
-  opacity: .85;
-  display: flex;
-  justify-self: center;
-  align-items: center;
-}
-
-/* Error bar */
+/* ===== Error ===== */
 .error {
   display: none;
-  margin-top: -40px;
-  margin-bottom: 16px;
+  margin: 12px 0 0;
   padding: 10px 12px;
   border-radius: 10px;
   background: #fed7d7;
@@ -91,24 +129,28 @@ viewport {
 }
 .error.show { display: block; }
 
-/* File preview */
+/* ===== File preview card ===== */
 .fileCard {
   display: none;
   background: #fff;
   border: 1px solid rgba(0,0,0,.12);
   border-radius: 12px;
   padding: 12px 14px;
-  margin-bottom: 12px;
+  margin: 12px 0 0;
   align-items: center;
   gap: 12px;
 }
-.fileCard.show { display: grid; grid-template-columns: 1fr auto; }
+.fileCard.show {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
 
-.fileName { 
-  font-weight: 600; 
-  color: #2b2e3a; 
-  overflow: hidden; 
+.fileName {
+  font-weight: 600;
+  color: #2b2e3a;
+  overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .fileMeta { color: #667085; font-size: 13px; }
 
@@ -123,11 +165,10 @@ viewport {
 }
 .removeBtn:hover { background: #f3f4f6; color: #666; }
 
-/* Bottom Upload button (rounded, light gray) */
+/* ===== Upload button ===== */
 .uploadBtn {
   width: fit-content;
-  padding: 24px 40px;
-  height: 44px;
+  padding: 12px 20px;
   margin: 18px auto 0;
   display: flex;
   align-items: center;
@@ -137,27 +178,37 @@ viewport {
   color: #505a6e;
   font-weight: 700;
   cursor: pointer;
-  transition: background-color .15s ease, transform .1s ease;
+  transition: background-color .15s ease, transform .1s ease, box-shadow .15s ease;
   border-radius: 1.2rem;
+  border: 1px solid rgba(0,0,0,0.08);
 }
-
-.uploadIcon {
-  display: flex;
-  width:fit-content
-}
-
 .uploadBtn:hover { background: #d5dbe6; }
 .uploadBtn:active { transform: translateY(1px); }
 .uploadBtn:disabled { color: #98a2b3; cursor: not-allowed; }
 
-/* Hidden input */
-.hiddenInput { display: none; }
+.uploadIcon { display: inline-flex; }
 
-/* Small phones */
-@media (max-width: 420px) {
-  .dropZone { grid-template-columns: 1fr auto; }
-  .dzIcon { display: none; }
+/* ===== Results / preview ===== */
+.resultsSection { margin-top: 24px; }
+.resultsTitle { margin: 0 0 12px; font-size: 18px; font-weight: 700; color: #2b2e3a; }
+.resultsContainer { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; }
+.originalFile, .extractedText { background: #fff; border: 1px solid rgba(0,0,0,.08); border-radius: 12px; padding: 12px; }
+.previewImage { max-width: 100%; height: auto; border-radius: 8px; }
+.previewPdf { width: 100%; height: 420px; border: none; border-radius: 8px; }
+.textContent { white-space: pre-wrap; line-height: 1.45; color: #2b2e3a; }
+
+/* A11y helper */
+.visuallyHidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
 
-/* Wrapper tag selector fix for CSS Modules */
-viewport, .viewport { position: fixed; inset: 0; }
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .dropZone, .dropZone::after { transition: none; }
+}
+
+/* Small phones */
+@media (max-width: 540px) {
+  .resultsContainer { grid-template-columns: 1fr; }
+}
