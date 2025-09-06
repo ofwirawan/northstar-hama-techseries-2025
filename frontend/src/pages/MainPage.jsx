@@ -26,6 +26,7 @@ export const MainPage = () => {
   const [isFileMode, setIsFileMode] = useState(false);
   const [isProcessingFile, setIsProcessingFile] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useCurrentLanguage();
+  const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   const handleFileParsed = (parsed) => {
     localStorage.setItem('parsedDoc', JSON.stringify(parsed));

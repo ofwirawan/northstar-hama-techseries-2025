@@ -5,11 +5,9 @@ import styles from "./ChatBot.module.css";
 
 export const ChatBot = () => {
   // Build a safe API root; fallback to localhost
-    const BACKEND_URL = useMemo(() => {
+    const VITE_BACKEND_URL = useMemo(() => {
     const raw =
-        process.env.BACKEND_URL ||
-        process.env.API_BASE ||
-        process.env.LOCAL_JS_URL ||
+        process.env.VITE_BACKEND_URL ||
         "http://127.0.0.1:8000";
     return raw; // trim trailing slashes
     }, []);
@@ -101,7 +99,7 @@ export const ChatBot = () => {
         this.showLoading();
 
         // Send message to backend
-        const res = await fetch(`${BACKEND_URL}/chatbot/msg/`, {
+        const res = await fetch(`${VITE_BACKEND_URL}/chatbot/msg/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

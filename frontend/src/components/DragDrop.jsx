@@ -1,10 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import styles from "./DragDrop.module.css";
 import { ArrowUpFromLine, ChevronRight, Laptop } from "lucide-react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { translations } from "../assets/Translations.jsx";
-import dotenv from "dotenv";
-dotenv.config();
 
 const ACCEPTED_TYPES = ["application/pdf", "image/png", "image/jpeg", "image/jpg"];
 const ACCEPTED_EXTENSIONS = [".pdf", ".png", ".jpg", ".jpeg"];
@@ -16,6 +14,8 @@ const DragDrop = ({ isProcessingFile, setIsProcessingFile, handleFileParsed, cur
   const [error, setError] = useState("");
   const [processedText, setProcessedText] = useState("");
   const [originalFileUrl, setOriginalFileUrl] = useState("");
+  const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 
   const fileInputRef = useRef(null);
   const dropZoneRef = useRef(null);
@@ -123,7 +123,7 @@ const DragDrop = ({ isProcessingFile, setIsProcessingFile, handleFileParsed, cur
     setError("");
 
     try {
-      await fetch(`${BACKEND_URL}/chatbot/init/`, {
+      await fetch(`${VITE_BACKEND_URL}/chatbot/init/`, {
         method: "POST",
         body: JSON.stringify({
           'lang': currentLanguage,
@@ -136,7 +136,7 @@ formData.append("lang", currentLanguage || "id");
 formData.append("sessionId", localStorage.getItem("sessionId") || "");
 formData.append("file", selectedFile);
 
-const response = await fetch(`${BACKEND_URL}/chatbot/summary/`, {
+const response = await fetch(`${VITE_BACKEND_URL}/chatbot/summary/`, {
   method: "POST",
   body: formData,
 });
