@@ -74,7 +74,12 @@ export const MainPage = () => {
               </div>
             </article>
 
-            <article className={styles.featureCard} data-testid="chat-card">
+            <article 
+              className={styles.featureCard} 
+              data-testid="chat-card" 
+              onClick={()=> {
+                navigate('/chatbot');
+              }}>
               <div className={styles.featureIcon}>
                 <FeatureShapeTwo />
               </div>

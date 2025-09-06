@@ -5,17 +5,14 @@ import styles from "./ChatBot.module.css";
 
 export const ChatBot = () => {
   // Build a safe API root; fallback to localhost
-  const API_BASE = useMemo(() => {
+    const BACKEND_URL = useMemo(() => {
     const raw =
-      (typeof import.meta !== "undefined" && import.meta.env?.VITE_API_BASE) ||
-      process.env.REACT_APP_API_BASE ||
-      process.env.API_BASE ||
-      process.env.LOCAL_JS_URL ||
-      "http://127.0.0.1:8000";
-    const root = raw.replace(/\/+$/, "");
-    // append /chatbot if only host was provided
-    return /\/chatbot$/.test(root) ? root : `${root}/chatbot`;
-  }, []);
+        process.env.BACKEND_URL ||
+        process.env.API_BASE ||
+        process.env.LOCAL_JS_URL ||
+        "http://127.0.0.1:8000";
+    return raw; // trim trailing slashes
+    }, []);
 
   const currentLanguage = useMemo(
     () => localStorage.getItem("currentLanguage") || "en",
@@ -104,7 +101,7 @@ export const ChatBot = () => {
         this.showLoading();
 
         // Send message to backend
-        const res = await fetch('http://127.0.0.1:8000/chatbot/msg/', {
+        const res = await fetch(`${BACKEND_URL}/chatbot/msg/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

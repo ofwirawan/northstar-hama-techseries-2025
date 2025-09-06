@@ -6,6 +6,7 @@ import App from './App.jsx';
 import FeaturePage from './pages/FeaturePage.jsx';
 import LanguagePage from './pages/LanguagePage.jsx';
 import ScrollToTop from './components/ScrollToTop.jsx';
+import { ChatBot } from './components/ChatBot.jsx';
 
 const AppTree = () => (
   <BrowserRouter>
@@ -14,6 +15,7 @@ const AppTree = () => (
       <Route path="/" element={<App />} />
       <Route path="/conversation" element={<FeaturePage />} />
       <Route path="/language" element={<LanguagePage />} />
+      <Route path="/chatbot" element={<ChatBot />}/>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   </BrowserRouter>

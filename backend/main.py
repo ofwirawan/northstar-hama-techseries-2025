@@ -94,7 +94,7 @@ async def get_summary(lang: str = Form(...), sessionId: str = Form(""), file : U
     bot_data = bot.ingest_text(ingested_data)
     chunks = bot_data["chunks"]
     translated_doc = bot_data["translated_doc"]
-    summary = bot.initial_summary(translated_doc)
+    summary = bot.initial_summary()
     
     data = {
         'sessionId': sessionId,
