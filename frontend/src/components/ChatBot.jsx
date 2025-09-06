@@ -7,7 +7,7 @@ export const ChatBot = () => {
   // Build a safe API root; fallback to localhost
     const VITE_BACKEND_URL = useMemo(() => {
     const raw =
-        process.env.VITE_BACKEND_URL ||
+        import.meta.env.VITE_BACKEND_URL ||
         "http://127.0.0.1:8000";
     return raw; // trim trailing slashes
     }, []);
@@ -43,7 +43,7 @@ export const ChatBot = () => {
     (async () => {
       try {
         setLoading(true);
-        const res = await fetch(`${API_BASE}/init`, {
+        const res = await fetch(`${VITE_BACKEND_URL}/init/`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -85,7 +85,7 @@ export const ChatBot = () => {
       }
     })();
     return () => ctrl.abort();
-  }, [API_BASE, currentLanguage, storedId, sessionId, t.addBotMessage, t.errorBotMessageTwo]);
+  }, [VITE_BACKEND_URL, currentLanguage, storedId, sessionId, t.addBotMessage, t.errorBotMessageTwo]);
 
   async function handleSend() {
     const message = input.trim();
