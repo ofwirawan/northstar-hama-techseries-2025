@@ -184,25 +184,7 @@ const FeaturePage = () => {
         {/* Right Panel - Summary & Chat */}
         <aside className={styles.rightPanel}>
           {/* Summary Section */}
-          <section className={styles.summaryPanel}>
-            <div className={styles.panelHeader}>
-              <h2 className={styles.panelTitle}>{translations[currentLanguage].summaryHeading}</h2>
-            </div>
-
-            <div className={styles.summaryContent}>
-              {/* AI Summary */}
-              <div className={styles.aiMessage}>
-                {summaryText}
-              </div>
-
-              {/* User Messages */}
-              {messages.map((msg, idx) => (
-                <div key={idx} className={styles.userMessage}>
-                  {msg}
-                </div>
-              ))}
-            </div>
-          </section>
+            <ChatBot />
 
           {/* Chat Input */}
           <form className={styles.chatForm} onSubmit={handleSend}>
