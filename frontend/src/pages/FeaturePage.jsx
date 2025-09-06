@@ -2,6 +2,7 @@ import React, { useMemo, useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './FeaturePage.module.css';
 import { FilePreview } from '../components/FilePreview';
+import {ChatBot} from "../components/ChatBot"
 
 // Local assets (adjust paths if yours differ)
 import leftIcon from '../assets/change-language-translation-assets/left.svg';
@@ -44,23 +45,32 @@ const FeaturePage = () => {
   useEffect(() => {
     if (!parsed) return;
 
-    const name = parsed.originalFileName || parsed.file?.name || '';
-    const type = parsed.mimeType || parsed.file?.type || '';
-    setFilename(name);
-    setFileType(type);
+    const name = parsed.originalFileName || parsed.file?.name || "";
+    const type = parsed.mimeType || parsed.file?.type || "";
 
-    let createdUrl = '';
+    let createdUrl = "";
+    let url = "";
+
     if (parsed.objectUrl) {
-      setFileUrl(parsed.objectUrl);
+      url = parsed.objectUrl;
     } else if (parsed.file instanceof File) {
       createdUrl = URL.createObjectURL(parsed.file);
-      setFileUrl(createdUrl);
+      url = createdUrl;
+    }
+
+    setFilename(name);
+    setFileType(type);
+    setFileUrl(url);
+
+    // If any required field is missing, go home
+    if (!name || !type || !url) {
+      navigate("/", { replace: true, state: { reason: "missing_file_preview" } });
     }
 
     return () => {
       if (createdUrl) URL.revokeObjectURL(createdUrl);
     };
-  }, [parsed]);
+  }, [parsed, navigate]);
 
   // Demo translate fetch
   const handleTranslate = async () => {
@@ -184,25 +194,7 @@ const FeaturePage = () => {
         {/* Right Panel - Summary & Chat */}
         <aside className={styles.rightPanel}>
           {/* Summary Section */}
-          <section className={styles.summaryPanel}>
-            <div className={styles.panelHeader}>
-              <h2 className={styles.panelTitle}>{translations[currentLanguage].summaryHeading}</h2>
-            </div>
-
-            <div className={styles.summaryContent}>
-              {/* AI Summary */}
-              <div className={styles.aiMessage}>
-                {summaryText}
-              </div>
-
-              {/* User Messages */}
-              {messages.map((msg, idx) => (
-                <div key={idx} className={styles.userMessage}>
-                  {msg}
-                </div>
-              ))}
-            </div>
-          </section>
+            <ChatBot />
 
           {/* Chat Input */}
           <form className={styles.chatForm} onSubmit={handleSend}>

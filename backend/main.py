@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, File, Form, Depends
 from contextlib import asynccontextmanager
 from fastapi import Depends, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
@@ -75,7 +75,7 @@ async def initiate_chat(init: ChatbotInit, db=Depends(get_db)):
     return {"retrieveLocalStorage": needsRetrieve, "message": init_msg}
 
 @app.post("/chatbot/summary/")
-async def get_summary(lang: str, sessionId: str, file : UploadFile = File(...), db=Depends(get_db)):
+async def get_summary(lang: str = Form(...), sessionId: str = Form(""), file : UploadFile = File(...), db=Depends(get_db)):
     # the params above cannot be replaced by a Pydantic model because it is not JSON being posted to this endpoint
 
     bot = DocumentChatbot(lang)
@@ -92,8 +92,10 @@ async def get_summary(lang: str, sessionId: str, file : UploadFile = File(...), 
     }
 
     bot_data = bot.ingest_text(ingested_data)
-    translated_doc = bot_data['translated_doc']
-    chunks = bot_data['chunks']
+
+    chunks = bot_data["chunks"]
+    translated_doc = bot_data["translated_doc"]
+
     summary = bot.initial_summary()
     
     data = {

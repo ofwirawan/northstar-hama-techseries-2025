@@ -24,6 +24,7 @@
     "@rollup/rollup-linux-x64-gnu": "^4.50.0",
     "concurrently": "^9.2.1",
     "cross-env": "^10.0.0",
+    "dotenv": "^17.2.2",
     "lucide-react": "^0.542.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
