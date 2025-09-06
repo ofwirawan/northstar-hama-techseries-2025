@@ -106,9 +106,11 @@ const DragDrop = ({ isProcessingFile, setIsProcessingFile, handleFileParsed, cur
 
     try {
       const formData = new FormData();
+      formData.append("lang", currentLanguage || "en");
+      formData.append("sessionId", localStorage.getItem("sessionId") ?? "");
       formData.append("file", selectedFile);
 
-      const response = await fetch("http://127.0.0.1:8000/upload_files/", {
+      const response = await fetch("http://127.0.0.1:8000/chatbot/summary/", {
         method: "POST",
         body: formData,
       });
@@ -151,7 +153,7 @@ const DragDrop = ({ isProcessingFile, setIsProcessingFile, handleFileParsed, cur
       <div className={styles.card}>
         {!isProcessingFile ? (
           <>
-            <h1 className={styles.title}>Translate Document</h1>
+            <h1 className={styles.title}>{translations[currentLanguage].uploadFilesHeading}</h1>
 
             <div
               ref={dropZoneRef}
@@ -178,7 +180,7 @@ const DragDrop = ({ isProcessingFile, setIsProcessingFile, handleFileParsed, cur
                   <Laptop />
                 </span>
                 <span className={styles.dzText}>
-                  {translations[currentLanguage].uploadFromComputer}
+                  {!isDragActive && (translations[currentLanguage].uploadFromComputer)}
                 </span>
               </div>
               <div className={styles.dzRightWrapper}>

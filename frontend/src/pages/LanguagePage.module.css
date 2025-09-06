@@ -80,27 +80,27 @@ h1 {
 
 /* Language card button */
 .card {
-  width: 308px;
-  height: 78px;
+  width: 25%;
+  height: 15%;
   border: 1.1px solid #000;
   border-radius: 31.47px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   background-color: #B8CFCE;
-  font-size: clamp(16px, 1.7vw, 20px);
+  font-size: clamp(20px, 2vw, 28px);
   font-weight: 700;
   cursor: pointer;
   transition: background-color 220ms ease, color 220ms ease, transform 120ms ease, border-color 200ms ease;
-  padding: 0 20px; /* space for emoji+text */
+  padding: 0 20px;
 }
 
 .card p {
   display: inline-flex;
   align-items: center;
-  gap: 10px;          /* emoji ↔ text spacing */
+  gap: 10px;
   margin: 0;
-  font-size: inherit; /* keep sizes consistent */
+  font-size: inherit;
 }
 
 @media (hover: hover) {
