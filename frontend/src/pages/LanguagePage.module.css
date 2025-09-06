@@ -1,15 +1,32 @@
+/* Root tokens */
+:root {
+  --page-max: 1440px;
+  --space-1: 8px;
+  --space-2: 12px;
+  --space-3: 16px;
+  --space-4: 20px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --radius-lg: 31.47px;
+  --border: 1.1px solid #000;
+  --ink: #333446;
+  --surface: #FAFFFC;
+  --muted: #EAEFEF;
+  --brand: #B8CFCE;
+}
+
 /* Root page wrapper */
 .page {
-  max-width: 1440px;
-  min-height: 100vh;                 /* fill height */
-  margin: 0 auto;                    /* center */
-  padding: 24px;                     /* breathing room on small screens */
+  max-width: var(--page-max);
+  min-height: 100svh;
+  margin: 0 auto;
+  padding: var(--space-5);
   box-sizing: border-box;
 }
 
 /* Headings */
 h4 {
-  color: #333446;
+  color: var(--ink);
   display: flex;
   font-size: clamp(20px, 2vw, 29.12px);
   margin: 0;
@@ -20,127 +37,97 @@ h4 {
 h1 {
   font-weight: 500;
   font-size: clamp(28px, 3.5vw, 49.21px);
-  color: #333446;
+  color: var(--ink);
   margin: 0;
 }
 
 /* Back button */
 .buttons {
-  width: 74px;
-  height: 60.79px;
-  border: 1.1px solid #000;
-  border-radius: 31.47px;
+  width: 64px;
+  height: 56px;
+  border: var(--border);
+  border-radius: var(--radius-lg);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: #B8CFCE;
-  margin-right: 20px;
+  background-color: var(--brand);
+  margin-right: var(--space-3);
   cursor: pointer;
   transition: transform 120ms ease, background-color 200ms ease, border-color 200ms ease;
 }
-
-@media (hover: hover) {
-  .buttons:hover {
-    background-color: #a8c1c0;
-  }
-}
-
-.buttons:active {
-  transform: translateY(1px) scale(0.99);
-}
-
-.buttons:focus-visible {
-  outline: 3px solid #5aa1a0;
-  outline-offset: 2px;
-}
+@media (hover: hover) { .buttons:hover { background-color: #a8c1c0; } }
+.buttons:active { transform: translateY(1px) scale(0.99); }
+.buttons:focus-visible { outline: 3px solid #5aa1a0; outline-offset: 2px; }
 
 /* Header row */
 .heading {
   display: flex;
   align-items: center;
   width: 100%;
-  gap: 16px;
-  margin: 16px 0 30px;
+  gap: var(--space-3);
+  margin: var(--space-3) 0 var(--space-5);
+  flex-wrap: wrap;                /* allow wrap on small screens */
 }
 
-/* Language grid: stacks on mobile, 2 cols tablet, 3 cols desktop */
+/* Language grid: fluid & responsive */
 .languages {
+  --card-min: 220px;
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-  justify-items: center;
-}
-
-@media (min-width: 560px) {
-  .languages { grid-template-columns: repeat(2, 308px); }
-}
-@media (min-width: 980px) {
-  .languages { grid-template-columns: repeat(3, 308px); }
+  grid-template-columns: repeat(auto-fit, minmax(var(--card-min), 1fr));
+  gap: var(--space-3);
+  justify-items: stretch;
 }
 
 /* Language card button */
 .card {
-  width: 25vw;
-  height: 15vh;
-  border: 1.1px solid #000;
-  border-radius: 31.47px;
+  width: 100%;
+  max-width: 308px;               /* caps at your original width */
+  aspect-ratio: 16 / 9;           /* consistent, responsive height */
+  border: var(--border);
+  border-radius: var(--radius-lg);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: #B8CFCE;
-  font-size: clamp(20px, 2vw, 28px);
+  background-color: var(--brand);
+  font-size: clamp(18px, 1.8vw, 28px);
   font-weight: 700;
   cursor: pointer;
   transition: background-color 220ms ease, color 220ms ease, transform 120ms ease, border-color 200ms ease;
-  padding: 0 20px;
+  padding: 0 var(--space-4);
 }
-
 .card p {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2);
   margin: 0;
   font-size: inherit;
 }
-
-@media (hover: hover) {
-  .card:hover {
-    background-color: #333446;
-    color: #EAEFEF;
-  }
-}
-
-.card:active {
-  transform: translateY(1px) scale(0.995);
-}
-
-.card:focus-visible {
-  outline: 3px solid #5aa1a0;
-  outline-offset: 3px;
-}
+@media (hover: hover) { .card:hover { background-color: var(--ink); color: #EAEFEF; } }
+.card:active { transform: translateY(1px) scale(0.995); }
+.card:focus-visible { outline: 3px solid #5aa1a0; outline-offset: 3px; }
 
 /* Selected language state */
 .active {
-  background-color: #333446;
+  background-color: var(--ink);
   color: #EAEFEF;
-  border-color: #333446;
+  border-color: var(--ink);
 }
 
 /* Generic text */
 p { font-size: clamp(16px, 1.7vw, 20px); }
 
-/* Optional content boxes (if you keep them) */
+/* Optional content boxes */
 .textbox {
   width: min(640px, 100%);
-  height: 589px;
-  border: 1.1px solid #000;
-  border-radius: 31.47px;
+  height: clamp(320px, 48vh, 589px);  /* responsive height */
+  border: var(--border);
+  border-radius: var(--radius-lg);
   display: flex;
-  align-items: flex-start;  /* was "left" (invalid) */
+  align-items: flex-start;
   flex-wrap: wrap;
-  background-color: #FAFFFC;
+  background-color: var(--surface);
   margin-bottom: 0;
-  padding: 40px;
+  padding: clamp(20px, 4vw, 40px);
   overflow: auto;
   box-sizing: border-box;
 }
@@ -148,36 +135,35 @@ p { font-size: clamp(16px, 1.7vw, 20px); }
 .chat-ai,
 .chat-user {
   width: min(456px, 100%);
-  border: 1.1px solid #000;
-  border-radius: 31.47px;
+  border: var(--border);
+  border-radius: var(--radius-lg);
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   margin: 30px 0 0;
   padding: 5%;
-  font-size: clamp(18px, 2.2vw, 30px);
+  font-size: clamp(16px, 2.2vw, 24px);
   box-sizing: border-box;
 }
-
 .chat-ai { background-color: #EAEFEF; border-radius: 31.47px 31.74px 31.74px 0; }
-.chat-user { background-color: #333446; color: #EAEFEF; border-radius: 31.47px 31.74px 0 31.74px; }
+.chat-user { background-color: var(--ink); color: #EAEFEF; border-radius: 31.47px 31.74px 0 31.74px; }
 
 .chatbox {
   width: min(560px, 100%);
-  height: 50px;
-  border: 1.1px solid #000;
-  border-radius: 31.47px;
+  min-height: 50px;
+  border: var(--border);
+  border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
-  background-color: #FAFFFC;
+  background-color: var(--surface);
   margin: 10px 0 0 10px;
-  padding: 20px;
-  font-size: clamp(18px, 2.2vw, 30px);
+  padding: 14px 20px;
+  font-size: clamp(16px, 2vw, 22px);
   overflow: auto;
   box-sizing: border-box;
 }
 
-/* Misc IDs (kept, but tightened) */
+/* IDs kept (tightened) */
 #h1inbox { margin: 0 20px 0 0; font-weight: 700; }
 
 #box-header {
@@ -187,30 +173,96 @@ p { font-size: clamp(16px, 1.7vw, 20px); }
   justify-content: center;
 }
 
-#pinbox { font-size: clamp(20px, 2.5vw, 30px); color: #333446; }
+#pinbox { font-size: clamp(18px, 2.2vw, 24px); color: var(--ink); }
 #expand { margin-right: 20px; }
 
 #summary {
   margin-left: 10px;
   width: min(520px, 100%);
-  height: 489px;
+  height: clamp(280px, 42vh, 489px); /* responsive height */
   box-sizing: border-box;
 }
 
 #boxes {
-  display: flex;
-  flex-wrap: wrap;     /* was text-wrap */
-  gap: 12px;
+  display: grid;                        /* grid flows better responsively */
+  grid-template-columns: 1fr;
+  gap: var(--space-2);
 }
 
+/* On medium screens, split into two columns if space allows */
+@media (min-width: 880px) {
+  #boxes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+
+/* On large screens, allow three columns if you add more boxes */
+@media (min-width: 1280px) {
+  #boxes {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Search icon sizing */
 #search {
-  width: 30px; height: 30px;
-  margin-top: 10px; margin-right: 10px;
+  width: 30px;
+  height: 30px;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+/* Responsive spacing tweaks */
+@media (max-width: 640px) {
+  .page { padding: var(--space-3); }
+  .buttons { width: 56px; height: 52px; }
 }
 
 /* Motion safety */
 @media (prefers-reduced-motion: reduce) {
-  .card, .buttons {
-    transition: none;
+  .card, .buttons { transition: none; }
+}
+
+:root {
+  /* tiny guard so content isn't flush against notches/rounded corners */
+  --edge-pad: max(0px, env(safe-area-inset-left));
+}
+
+html, body {
+  margin: 0;               /* kill default browser margin */
+  padding: 0;
+}
+
+.page {
+  max-width: none;         /* remove 1440px cap */
+  width: 100%;
+  min-height: 100svh;
+  margin: 0;               /* center no longer needed */
+  padding: 0;              /* remove outer gutter */
+}
+
+/* Make header/content rows touch edges (with safe-area) */
+.heading {
+  margin: 0 0 20px;
+  padding: 16px var(--edge-pad);
+  width: 100%;
+}
+
+/* Let the languages grid span full width */
+.languages {
+  padding-inline: var(--edge-pad);
+  justify-items: stretch;
+}
+
+/* Boxes section spans full width */
+#boxes {
+  padding-inline: var(--edge-pad);
+}
+
+/* Optional: make cards truly full width on small screens */
+@media (max-width: 720px) {
+  .card {
+    max-width: none;
+    width: 100%;
   }
 }
