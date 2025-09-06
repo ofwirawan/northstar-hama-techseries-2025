@@ -4,13 +4,28 @@ import styles from './MainPage.module.css';
 import { FeatureShapeOne, FeatureShapeTwo } from '../assets/Icons';
 import { Globe } from 'lucide-react';
 import DragDrop from '../components/DragDrop';
+import {translations} from "../assets/Translations.jsx"
 
-const MainPage = () => {
+export function useCurrentLanguage() {
+  const [currentLanguage, setCurrentLanguage] = useState(() => {
+    return localStorage.getItem("currentLanguage") || "en";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("currentLanguage", currentLanguage);
+  }, [currentLanguage]);
+
+
+  return [currentLanguage, setCurrentLanguage];
+}
+
+export const MainPage = () => {
   const navigate = useNavigate();
 
   const [isUploadingFile, setIsUploadingFile] = useState(false);
   const [isFileMode, setIsFileMode] = useState(false);
   const [isProcessingFile, setIsProcessingFile] = useState(false);
+  const [currentLanguage, setCurrentLanguage] = useCurrentLanguage();
 
   const handleFileParsed = (parsed) => {
     localStorage.setItem('parsedDoc', JSON.stringify(parsed));
@@ -26,13 +41,13 @@ const MainPage = () => {
       <div className={styles.container}>
         <main className={styles.mainContent}>
           <h1 className={styles.mainTitle}>NorthStar</h1>
-          <p className={styles.subtitle}>Light the way to fair work</p>
+          <p className={styles.subtitle}>{translations[currentLanguage]}</p>
 
           <button type="button" className={styles.languageButton} aria-label="Change Language">
             <div className={`${styles.featureIcon} ${styles.languageIcon}`}>
               <Globe />
             </div>
-            Change language
+            {translations[currentLanguage].changeLanguage}
           </button>
 
           <section className={styles.featuresContainer}>
@@ -46,10 +61,10 @@ const MainPage = () => {
               </div>
               <div className={styles.featureContent}>
                 <h3 className={styles.featureTitle}>
-                  Upload your document to translate and get key points.
+                  {translations[currentLanguage].optionOneHeading}
                 </h3>
                 <p className={styles.featureDescription}>
-                  This includes job contracts and other relevant job documents
+                  {translations[currentLanguage].optionOneDesc}
                 </p>
               </div>
             </article>
@@ -60,9 +75,9 @@ const MainPage = () => {
               </div>
               <div className={styles.featureContent}>
                 <h3 className={styles.featureTitle}>
-                  Only got a verbal job offer, or unsure about your job documents?
+                  {translations[currentLanguage].optionTwoHeading}
                 </h3>
-                <p className={styles.featureDescription}>Ask the chatbot for help</p>
+                <p className={styles.featureDescription}>{translations[currentLanguage].optionTwoDesc}</p>
               </div>
             </article>
           </section>
@@ -81,6 +96,7 @@ const MainPage = () => {
               isProcessingFile={isProcessingFile}
               setIsProcessingFile={setIsProcessingFile}
               handleFileParsed={handleFileParsed}
+              currentLanguage={currentLanguage}
             />
           </div>
         </div>
@@ -88,5 +104,3 @@ const MainPage = () => {
     </>
   );
 };
-
-export default MainPage;

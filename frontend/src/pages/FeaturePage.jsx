@@ -7,7 +7,7 @@ import { FilePreview } from '../components/FilePreview';
 import leftIcon from '../assets/change-language-translation-assets/left.svg';
 import expandIcon from '../assets/change-language-translation-assets/expand.svg';
 import searchIcon from '../assets/change-language-translation-assets/search.svg';
-
+import { useCurrentLanguage } from './MainPage';
 const FeaturePage = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
@@ -23,6 +23,8 @@ const FeaturePage = () => {
 
   // Text from backend (demo endpoint)
   const [translated, setTranslated] = useState('');
+  const [currentLanguage, setCurrentLanguage] = useCurrentLanguage();
+
 
   // Prefer router state, fall back to localStorage
   const parsed = useMemo(() => {
@@ -90,7 +92,7 @@ const FeaturePage = () => {
     if (fileType === 'application/pdf') {
       return <embed src={fileUrl} type="application/pdf" className={styles.pdfEmbed} />;
     }
-    return <p className={styles.muted}>File type not supported for preview</p>;
+    return <p className={styles.muted}>{translations[currentLanguage].viewReject}</p>;
   };
 
   if (!parsed) return null; // will navigate away
@@ -125,6 +127,7 @@ const FeaturePage = () => {
             fileType={fileType} 
             setShowOriginal={setShowOriginal}
             showOriginal={showOriginal}
+            currentLanguage={currentLanguage}
           />
         </div>
         <div className={styles.blurOverlay} />
@@ -145,7 +148,7 @@ const FeaturePage = () => {
           </button>
           <div className={styles.brandSection}>
             <h4 className={styles.brand}>NorthStar</h4>
-            <h1 className={styles.title}>AI Document Translation & Analyzer Tool</h1>
+            <h1 className={styles.title}>{translations[currentLanguage].featurePageHeading}</h1>
           </div>
         </div>
       </header>
@@ -156,17 +159,17 @@ const FeaturePage = () => {
         <section className={styles.textPanel}>
           <div className={styles.panelHeader}>
             <h2 className={styles.panelTitle}>
-              Translated Text
+              {translations[currentLanguage].translatedHeading}
             </h2>
             <div className={styles.panelActions}>
               <button
                 type="button"
                 className={styles.actionButton}
                 onClick={() => setShowOriginal((s) => !s)}
-                title={showOriginal ? 'See translated text' : 'See original text'}
+                title={showOriginal ? f`${translations[currentLanguage].translatedHeading}` : f`${translations[currentLanguage].originalText}`}
               >
                 <img src={expandIcon} alt="" />
-                <span>See original text</span>
+                <span>{translations[currentLanguage].originalText}</span>
               </button>
             </div>
           </div>
@@ -183,7 +186,7 @@ const FeaturePage = () => {
           {/* Summary Section */}
           <section className={styles.summaryPanel}>
             <div className={styles.panelHeader}>
-              <h2 className={styles.panelTitle}>Summary</h2>
+              <h2 className={styles.panelTitle}>{translations[currentLanguage].summaryHeading}</h2>
             </div>
 
             <div className={styles.summaryContent}>
@@ -207,7 +210,7 @@ const FeaturePage = () => {
               <textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask anything..."
+                placeholder={translations[currentLanguage].chatPlaceholder}
                 className={styles.chatInput}
                 rows="1"
               />
