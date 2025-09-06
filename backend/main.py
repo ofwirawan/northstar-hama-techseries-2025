@@ -92,8 +92,10 @@ async def get_summary(lang: str = Form(...), sessionId: str = Form(""), file : U
     }
 
     bot_data = bot.ingest_text(ingested_data)
+
     chunks = bot_data["chunks"]
     translated_doc = bot_data["translated_doc"]
+
     summary = bot.initial_summary()
     
     data = {
@@ -121,11 +123,28 @@ async def answer_msg(req: ChatbotMessage, db=Depends(get_db)):
     response = ""
 
     if doc:
-        bot.ingest_text(doc["chunks"])
-        bot_data = bot.ingest_text(req.last_message)
-        chunks = bot_data["chunks"]
-        translated_doc = bot_data["translated_doc"]
+        # ingest initial data
+        init_ingested_data = {
+            "chunks": doc['chunks'],
+            "doc": doc['translated_doc'],
+            "translate": False
+        }
+        bot_data1 = bot.ingest_text(init_ingested_data)
+        translated_doc = bot_data1['translated_doc']
+        chunks = bot_data1['chunks']
+
+        new_ingested_data = {
+            'chunks': chunks,
+            'doc': req.last_message,
+            'translate': False
+        }
+
+        bot_data2 = bot.ingest_text(new_ingested_data)
+        translated_doc = bot_data2['translated_doc']
+        chunks = bot_data2['chunks']
+
         response = bot.chat(req.message)
+
         payload = {
             "lang": req.lang,
             "translated_doc": translated_doc,
