@@ -1,20 +1,35 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Send } from 'lucide-react';
-import {translations} from "../assets/Translations.jsx";
-import styles from "./ChatBot.module.css"
+import { Send } from "lucide-react";
+import { translations } from "../assets/Translations.jsx";
+import styles from "./ChatBot.module.css";
 
 export const ChatBot = () => {
-  const LOCAL_JS_URL = process.env.LOCAL_JS_URL;
+  // Build a safe API root; fallback to localhost
+  const API_BASE = useMemo(() => {
+    const raw =
+      (typeof import.meta !== "undefined" && import.meta.env?.VITE_API_BASE) ||
+      process.env.REACT_APP_API_BASE ||
+      process.env.API_BASE ||
+      process.env.LOCAL_JS_URL ||
+      "http://127.0.0.1:8000";
+    const root = raw.replace(/\/+$/, "");
+    // append /chatbot if only host was provided
+    return /\/chatbot$/.test(root) ? root : `${root}/chatbot`;
+  }, []);
 
   const currentLanguage = useMemo(
     () => localStorage.getItem("currentLanguage") || "en",
     []
   );
+  const t = translations?.[currentLanguage] || translations?.en || {};
 
-  const [messages, setMessages] = useState([]); // {role:'user'|'bot', text:string, isError?:boolean}
+  // Try resuming an existing session
+  const storedId = useMemo(() => localStorage.getItem("chat_session") || null, []);
+  const [sessionId, setSessionId] = useState(storedId);
+
+  const [messages, setMessages] = useState([]); // [{role:'user'|'bot', text, isError?}]
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [sessionId, setSessionId] = useState(null);
 
   const listRef = useRef(null);
   const inputRef = useRef(null);
@@ -23,49 +38,59 @@ export const ChatBot = () => {
   useEffect(() => {
     const el = listRef.current;
     if (!el) return;
-    const t = setTimeout(() => {
-      el.scrollTop = el.scrollHeight;
-    }, 30);
-    return () => clearTimeout(t);
+    const to = setTimeout(() => (el.scrollTop = el.scrollHeight), 30);
+    return () => clearTimeout(to);
   }, [messages, loading]);
 
-  // Initialize chatbot session
+  // Initialize / resume chatbot session
   useEffect(() => {
-    let cancelled = false;
+    const ctrl = new AbortController();
     (async () => {
       try {
         setLoading(true);
-        const res = await fetch(`${LOCAL_JS_URL}/init/`, {
+        const res = await fetch(`${API_BASE}/init`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ lang: currentLanguage }), 
+          body: JSON.stringify({
+            lang: currentLanguage || "en",
+            newSessionId: sessionId,     // optional hint to server
+            oldSessionId: storedId || "",// resume if possible
+          }),
+          signal: ctrl.signal,
         });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
-        if (cancelled) return;
-        if (data.session_id) setSessionId(data.session_id);
+
+        if (data.session_id && data.session_id !== sessionId) {
+          setSessionId(data.session_id);
+          localStorage.setItem("chat_session", data.session_id);
+        }
+
         setMessages((m) => [
           ...m,
-          { role: "bot", text: data.msg || translations[currentLanguage].addBotMessage || "Hello! How can I help you today?" },
+          {
+            role: "bot",
+            text: data.msg || t.addBotMessage || "Hello! How can I help you today?",
+          },
         ]);
       } catch (e) {
+        if (e.name === "AbortError") return;
         setMessages((m) => [
           ...m,
           {
             role: "bot",
             text:
-              translations[currentLanguage].errorBotMessageTwo,
+              t.errorBotMessageTwo ||
+              "Sorry, I'm having trouble starting up. Please refresh and try again.",
             isError: true,
           },
         ]);
       } finally {
-        if (!cancelled) setLoading(false);
+        setLoading(false);
       }
     })();
-    return () => {
-      cancelled = true;
-    };
-  }, [LOCAL_JS_URL, currentLanguage]);
+    return () => ctrl.abort();
+  }, [API_BASE, currentLanguage, storedId, sessionId, t.addBotMessage, t.errorBotMessageTwo]);
 
   async function handleSend() {
     const message = input.trim();
@@ -76,24 +101,32 @@ export const ChatBot = () => {
     setLoading(true);
 
     try {
-      const res = await fetch(`${LOCAL_JS_URL}/message`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message, sessionId }),
-      });
+        this.showLoading();
+
+        // Send message to backend
+        const res = await fetch('http://127.0.0.1:8000/chatbot/msg/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: message,
+                lang: currentLanguage || "en",
+                last_message: this.last_message || "",
+                sessionId: localStorage.getItem("sessionId")
+            })
+        });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
-      setMessages((m) => [
-        ...m,
-        { role: "bot", text: data.message ?? "" },
-      ]);
+      setMessages((m) => [...m, { role: "bot", text: data.message ?? "" }]);
     } catch (e) {
       setMessages((m) => [
         ...m,
         {
           role: "bot",
           text:
-            translations[currentLanguage].errorBotMesssageOne,
+            t.errorBotMessageOne ||
+            "Sorry, I'm having trouble processing your request. Please try again.",
           isError: true,
         },
       ]);
@@ -112,55 +145,56 @@ export const ChatBot = () => {
 
   return (
     <div className={styles.chatContainer}>
-    <div className={styles.chatHeader}>
+      <div className={styles.chatHeader}>
         <h2>AI Chatbot Assistant</h2>
-    </div>
+      </div>
 
-    <div className={styles.chatMessages} ref={listRef}>
+      <div className={styles.chatMessages} ref={listRef}>
         {messages.map((m, i) => (
-        <div
+          <div
             key={i}
             className={[
-            styles.message,
-            m.role === "user" ? styles.userMessage : styles.botMessage,
-            m.isError ? styles.errorMessage : ""
+              styles.message,
+              m.role === "user" ? styles.userMessage : styles.botMessage,
+              m.isError ? styles.errorMessage : "",
             ].join(" ")}
-        >
+          >
             {m.text}
-        </div>
+          </div>
         ))}
-    </div>
+      </div>
 
-    {loading && (
+      {loading && (
         <div className={styles.loading}>
-        <div className={styles.typingIndicator}>
-            <div className={styles.typingDot}></div>
-            <div className={styles.typingDot}></div>
-            <div className={styles.typingDot}></div>
+          <div className={styles.typingIndicator}>
+            <div className={styles.typingDot} />
+            <div className={styles.typingDot} />
+            <div className={styles.typingDot} />
+          </div>
         </div>
-        </div>
-    )}
+      )}
 
-    <div className={styles.inputContainer}>
+      <div className={styles.inputContainer}>
         <input
-        type="text"
-        className={styles.messageInput}
-        placeholder={translations[currentLanguage].chatPlaceholder}
-        maxLength={1000}
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={onKeyDown}
-        disabled={loading}
-        ref={inputRef}
+          type="text"
+          className={styles.messageInput}
+          placeholder={t.chatPlaceholder || "Type your message here..."}
+          maxLength={1000}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={onKeyDown}
+          disabled={loading}
+          ref={inputRef}
         />
         <button
-        className={styles.sendButton}
-        onClick={handleSend}
-        disabled={loading || !input.trim()}
+          className={styles.sendButton}
+          onClick={handleSend}
+          disabled={loading || !input.trim()}
+          aria-label={t.sendLabel || "Send"}
         >
-        <Send />
+          <Send />
         </button>
-    </div>
+      </div>
     </div>
   );
 };
