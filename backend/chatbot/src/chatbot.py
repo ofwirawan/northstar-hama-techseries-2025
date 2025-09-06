@@ -1,11 +1,12 @@
 import json
 import pathlib
 from typing import List
-from chunker import chunk_text
-from retriever import BM25Retriever
-from translator import translate_text, answer_from_context
-from prompts import SUMMARY_SYSTEM_PROMPT, SUMMARY_USER_PROMPT, CHAT_SYSTEM_PROMPT, CHAT_USER_PROMPT
-import config as config
+from backend.chatbot.src.chunker import chunk_text
+from backend.chatbot.src.retriever import BM25Retriever
+from backend.models import IngestedText
+from backend.chatbot.src.translator import translate_text, answer_from_context
+from backend.chatbot.src.prompts import SUMMARY_SYSTEM_PROMPT, SUMMARY_USER_PROMPT, CHAT_SYSTEM_PROMPT, CHAT_USER_PROMPT
+import backend.chatbot.src.config as config
 
 class DocumentChatbot:
     def __init__(self, t):
@@ -19,7 +20,7 @@ class DocumentChatbot:
 
     def read_txt_files_from_data_raw(self) -> List[str]:
         root = pathlib.Path(config.DATA_RAW_DIR)
-        json_path = pathlib.Path(__file__).parent.parent / root / "output.json"
+        json_path = pathlib.Path(__file__).parent.parent / root / "data.json"
         target_lang = config.TARGET_LANGUAGE.get(self.target_language, "English")
         translate_mode = config.TRANSLATE_DATA_RAW
 
@@ -34,19 +35,9 @@ class DocumentChatbot:
             # prepare texts first
             texts = [entry.get("info") for entry in data if entry.get("info")]
 
-            # optional: bulk translate if your translate_text supports batch
+            # bulk translate 
             if translate_mode:
                 texts = [translate_text(t, target_lang) or t for t in texts]
-
-            # for entry in data:
-            #     text = entry.get("info", "")
-            #     if not text:
-            #         continue
-
-            #     if translate_mode:
-            #         text = translate_text(text, target_lang) or text
-            
-            # chunks.extend(chunk_text(text, max_chars=1000, overlap=200))
 
             # chunk in one pass
             chunks = [c for text in texts for c in chunk_text(text, max_chars=1000, overlap=200) if len(c) > 10]
@@ -58,15 +49,46 @@ class DocumentChatbot:
     # main functions:
 
     # translate the document
-    def ingest_text(self, uploaded_txt: str) -> str:
-        self.translated_doc = translate_text(uploaded_txt, self.target_language) or uploaded_txt
-        doc_chunks = chunk_text(self.translated_doc, max_chars=1000, overlap=200)
-        support_chunks = self.read_txt_files_from_data_raw()
+    def ingest_text(self, data: IngestedText) -> str:
+        # how to use:
+        # support_chunks is the data from MOM and other sources that we have gathered
+        # "doc_chunks" are chunks from data that we submit to the bot, like parsed text from a document
+        # OR any relevant information, e.g. the previous response of the bot
+        # ^^ for doc, you can pass the {parsed text of a document} or can pass in the {{previous response of the bot}}
+
+        # data is a 3 key dict
+        # {chunks: [], doc: str, translate: boolean} 
+
+        # chunks can be empty[] or filled, chunks are stored in the db
+
+        # doc: you can pass the {{parsed text of a document}} or can pass in the {{previous response of the bot}} to 
+        # provide more context to the bot
+
+        # translate is a boolean value that indicates if you want a translated document or not 
+        # ^^ slight modification to the code; ONLY use [[translate]] when you are using ingest text to get the translated doc
+        
+        # who designed this? idk, but it works
+
+        return_dict = {}
+
+        doc_chunks = ""
+        uploaded_txt = data["doc"]
+
+        if data['translate']:
+            self.translated_doc = translate_text(uploaded_txt, self.target_language) or uploaded_txt
+            doc_chunks = chunk_text(self.translated_doc, max_chars=1000, overlap=200)
+        else:
+            doc_chunks = chunk_text(uploaded_txt, max_chars=1000, overlap=200)
+
+        support_chunks = data['chunks'] or self.read_txt_files_from_data_raw()
         self.chunks = doc_chunks + support_chunks
-        print("not working la kontol")
-        print(self.chunks)
         self.retriever = BM25Retriever(self.chunks) if self.chunks else None
-        return self.translated_doc
+
+        return_dict = {
+            "translated_doc": self.translated_doc,
+            "chunks": self.chunks   # source chunks + context chunks
+        }
+        return return_dict
 
     # summarize the document
     def initial_summary(self) -> str:
@@ -76,7 +98,7 @@ class DocumentChatbot:
 
     # chat the bot
     def chat(self, question: str) -> str:
-        if self.retriever is not None:
+        if self.retriever:
             top = self.retriever.retrieve(question, k=8)
             context_snippets = "\n\n---\n".join(top)
         else:

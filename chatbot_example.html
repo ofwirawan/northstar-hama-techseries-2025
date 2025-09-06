@@ -200,18 +200,21 @@
                     }
                 });
             }
-
+            createSessionId() {
+                return "session-" + Date.now() + "-" + Math.random().toString(36).substr(2, 9);
+            }
             async initializeChatbot() {
                 try {
                     this.showLoading();
-
+                    const sessionId = this.createSessionId()
+                    localStorage.setItem("sessionId", sessionId);
                     // Initialize chatbot session and get welcome message
                     const response = await fetch('http://127.0.0.1:8000/chatbot/init/', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({"lang": "id"})
+                        body: JSON.stringify({"lang": "id", "newSessionId": sessionId, "oldSessionId":""})
                     });
 
                     if (!response.ok) {
@@ -257,15 +260,11 @@
                         body: JSON.stringify({
                             message: message,
                             lang: "id",
-                            last_message: this.last_message
+                            last_message: this.last_message,
+                            sessionId: localStorage.getItem("sessionId")
                         })
                     });
 
-                    console.log({
-                            message: message,
-                            lang: "id",
-                            last_message: this.last_message
-                        })
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
