@@ -41,9 +41,14 @@ export const MainPage = () => {
       <div className={styles.container}>
         <main className={styles.mainContent}>
           <h1 className={styles.mainTitle}>NorthStar</h1>
-          <p className={styles.subtitle}>{translations[currentLanguage]}</p>
+          <p className={styles.subtitle}>{translations[currentLanguage].tagline}</p>
 
-          <button type="button" className={styles.languageButton} aria-label="Change Language">
+          <button 
+          className={styles.languageButton} 
+          aria-label="Change Language" 
+          onClick={()=> {
+            navigate('/language');
+          }}>
             <div className={`${styles.featureIcon} ${styles.languageIcon}`}>
               <Globe />
             </div>

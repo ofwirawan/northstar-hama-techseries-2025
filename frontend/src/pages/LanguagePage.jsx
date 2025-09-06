@@ -4,19 +4,9 @@ import React from "react";
 import styles from "./LanguagePage.module.css";
 import leftIcon from "../assets/change-language-translation-assets/left.svg";
 import { useNavigate } from "react-router-dom";
-import { useCurrentLanguage } from "../hooks/useCurrentLanguage"; // adjust path
+import { useCurrentLanguage } from "./MainPage.jsx";
 import { useEffect, useState } from "react";
 import { translations } from "../assets/Translations";
-
-export function useCurrentLanguage() {
-  const [currentLanguage, setCurrentLanguage] = useState(
-    () => localStorage.getItem("currentLanguage") || "en"
-  );
-  useEffect(() => {
-    localStorage.setItem("currentLanguage", currentLanguage);
-  }, [currentLanguage]);
-  return [currentLanguage, setCurrentLanguage];
-}
 
 const flagMap = {
   en: "🌐",
@@ -56,7 +46,7 @@ const LanguagePage = () => {
         <button
           type="button"
           className={styles.buttons}
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/")}
           aria-label="Back"
           title="Back"
         >
