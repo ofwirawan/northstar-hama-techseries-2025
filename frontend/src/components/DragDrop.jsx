@@ -1,14 +1,14 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./DragDrop.module.css";
 import { ArrowUpFromLine, ChevronRight, Laptop } from "lucide-react";
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import {translations} from "../assets/Translations.jsx"
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { translations } from "../assets/Translations.jsx";
 
 const ACCEPTED_TYPES = ["application/pdf", "image/png", "image/jpeg", "image/jpg"];
 const ACCEPTED_EXTENSIONS = [".pdf", ".png", ".jpg", ".jpeg"];
 const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
 
-const DragDrop = ({isProcessingFile, setIsProcessingFile, handleFileParsed, currentLanguage}) => {
+const DragDrop = ({ isProcessingFile, setIsProcessingFile, handleFileParsed, currentLanguage }) => {
   const [isDragActive, setIsDragActive] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [error, setError] = useState("");
@@ -17,6 +17,21 @@ const DragDrop = ({isProcessingFile, setIsProcessingFile, handleFileParsed, curr
 
   const fileInputRef = useRef(null);
   const dropZoneRef = useRef(null);
+  const dragCounterRef = useRef(0);
+
+  // Prevent navigating away when dropping a file outside the dropzone
+  useEffect(() => {
+    const preventDefaults = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+    };
+    window.addEventListener("dragover", preventDefaults);
+    window.addEventListener("drop", preventDefaults);
+    return () => {
+      window.removeEventListener("dragover", preventDefaults);
+      window.removeEventListener("drop", preventDefaults);
+    };
+  }, []);
 
   const validateFile = (file) => {
     if (!ACCEPTED_TYPES.includes(file.type)) return translations[currentLanguage].mimeReject;
@@ -33,15 +48,20 @@ const DragDrop = ({isProcessingFile, setIsProcessingFile, handleFileParsed, curr
     }
     setError("");
     setSelectedFile(file);
-    // Clear previous results
     setProcessedText("");
     setOriginalFileUrl("");
   };
-  
 
   const onInputChange = (e) => {
     const file = e.target.files?.[0];
     if (file) handleFile(file);
+  };
+
+  // Robust drag handlers using a counter to avoid flicker
+  const onDragEnter = (e) => {
+    e.preventDefault();
+    dragCounterRef.current += 1;
+    if (!isDragActive) setIsDragActive(true);
   };
 
   const onDragOver = (e) => {
@@ -51,12 +71,13 @@ const DragDrop = ({isProcessingFile, setIsProcessingFile, handleFileParsed, curr
 
   const onDragLeave = (e) => {
     e.preventDefault();
-    // Only deactivate if truly leaving
-    if (!dropZoneRef.current?.contains(e.relatedTarget)) setIsDragActive(false);
+    dragCounterRef.current = Math.max(0, dragCounterRef.current - 1);
+    if (dragCounterRef.current === 0) setIsDragActive(false);
   };
 
   const onDrop = (e) => {
     e.preventDefault();
+    dragCounterRef.current = 0;
     setIsDragActive(false);
     const file = e.dataTransfer.files?.[0];
     if (file) handleFile(file);
@@ -100,9 +121,9 @@ const DragDrop = ({isProcessingFile, setIsProcessingFile, handleFileParsed, curr
       setOriginalFileUrl(objectUrl);
 
       const payload = {
-        text: limitConsecutiveNewlines(result.text), //max 2 consecutive /n to remove excessive spacing
+        text: limitConsecutiveNewlines(result.text),
         file: selectedFile,
-        objectUrl: objectUrl,
+        objectUrl,
         originalFileName: selectedFile.name,
         mimeType: selectedFile.type,
         size: selectedFile.size,
@@ -119,26 +140,30 @@ const DragDrop = ({isProcessingFile, setIsProcessingFile, handleFileParsed, curr
 
   const fmtSize = (bytes) => {
     if (!bytes) return "0 B";
-    const k = 1024, units = ["B", "KB", "MB", "GB"];
+    const k = 1024;
+    const units = ["B", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return `${Math.round((bytes / Math.pow(k, i)) * 100) / 100} ${units[i]}`;
   };
 
   return (
-      <div className={styles.center}>
-        <div className={styles.card}>
-          {!isProcessingFile ? (
-            <React.Fragment>
+    <div className={styles.center}>
+      <div className={styles.card}>
+        {!isProcessingFile ? (
+          <>
             <h1 className={styles.title}>Translate Document</h1>
+
             <div
               ref={dropZoneRef}
               className={`${styles.dropZone} ${isDragActive ? styles.dropZoneActive : ""}`}
+              onDragEnter={onDragEnter}
               onDragOver={onDragOver}
               onDragLeave={onDragLeave}
               onDrop={onDrop}
               onClick={openPicker}
               role="button"
               tabIndex={0}
+              aria-describedby="dropzone-help"
               onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && openPicker()}
             >
               <input
@@ -148,20 +173,37 @@ const DragDrop = ({isProcessingFile, setIsProcessingFile, handleFileParsed, curr
                 onChange={onInputChange}
                 className={styles.hiddenInput}
               />
-              <span className={styles.dzIcon}>
-                <Laptop />
-              </span>
-              <span className={styles.dzText}>{translations[currentLanguage].uploadFromComputer}</span>
-              <span className={styles.dzArrow}><ChevronRight/></span>
+              <div className={styles.dzWrapper}>
+                <span className={styles.dzIcon}>
+                  <Laptop />
+                </span>
+                <span className={styles.dzText}>
+                  {translations[currentLanguage].uploadFromComputer}
+                </span>
+              </div>
+              <div className={styles.dzRightWrapper}>
+                <span className={styles.dzArrow}>
+                  <ChevronRight />
+                </span>
+              </div>
+
+              {/* Center hint when active */}
+              <div className={styles.dropHint} aria-hidden={!isDragActive}>
+                {translations[currentLanguage]?.dropHere || "Drop your file here"}
+              </div>
+            </div>
+
+            <div id="dropzone-help" className={styles.visuallyHidden}>
+              Press Enter or Space to open the file picker. You can also drag and drop a PDF or image here.
             </div>
 
             {/* Error */}
-            <div className={`${styles.error} ${error ? " " + styles.show : ""}`}>
+            <div className={`${styles.error} ${error ? styles.show : ""}`} aria-live="polite">
               {error}
             </div>
 
             {/* Selected file */}
-            <div className={`${styles.fileCard} ${selectedFile ? " " + styles.show : ""}`}>
+            <div className={`${styles.fileCard} ${selectedFile ? styles.show : ""}`}>
               <div>
                 <div className={styles.fileName}>{selectedFile?.name}</div>
                 <div className={styles.fileMeta}>
@@ -174,51 +216,36 @@ const DragDrop = ({isProcessingFile, setIsProcessingFile, handleFileParsed, curr
             </div>
 
             {/* Upload button */}
-            <button
-              className={styles.uploadBtn}
-              onClick={upload}
-              disabled={!selectedFile || isProcessingFile}
-            >
+            <button className={styles.uploadBtn} onClick={upload} disabled={!selectedFile || isProcessingFile}>
               <div className={styles.uploadIcon}>
-                <ArrowUpFromLine /> 
+                <ArrowUpFromLine />
               </div>
               Upload
             </button>
 
-            {/* Results section - only show if we have processed text */}
+            {/* Results */}
             {processedText && (
               <div className={styles.resultsSection}>
                 <h2 className={styles.resultsTitle}>{translations[currentLanguage].fileProcessing}</h2>
-                
+
                 <div className={styles.resultsContainer}>
                   <div className={styles.originalFile}>
                     <h3>Original File</h3>
                     {selectedFile?.type.startsWith("image/") ? (
-                      <img 
-                        src={originalFileUrl} 
-                        alt="Original file" 
-                        className={styles.previewImage}
-                      />
+                      <img src={originalFileUrl} alt="Original file" className={styles.previewImage} />
                     ) : selectedFile?.type === "application/pdf" ? (
-                      <embed 
-                        src={originalFileUrl} 
-                        type="application/pdf" 
-                        className={styles.previewPdf}
-                      />
+                      <embed src={originalFileUrl} type="application/pdf" className={styles.previewPdf} />
                     ) : null}
                   </div>
-                  
+
                   <div className={styles.extractedText}>
                     <h3>Extracted Text</h3>
-                    <div className={styles.textContent}>
-                      {processedText}
-                    </div>
+                    <div className={styles.textContent}>{processedText}</div>
                   </div>
                 </div>
               </div>
             )}
-
-          </React.Fragment>
+          </>
         ) : (
           <div className={styles.loadingContainer}>
             <DotLottieReact
@@ -229,8 +256,8 @@ const DragDrop = ({isProcessingFile, setIsProcessingFile, handleFileParsed, curr
             <p className={styles.loadingText}>{translations[currentLanguage].fileProcessing}</p>
           </div>
         )}
-        </div>
       </div>
+    </div>
   );
 };
 
