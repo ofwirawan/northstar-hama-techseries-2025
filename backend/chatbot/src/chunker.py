@@ -10,3 +10,4 @@ def chunk_text(text: str, max_chars: int = 1000, overlap: int = 200):
         if end == n: break
         start = max(0, end - overlap)
     return chunks
+

@@ -114,8 +114,12 @@
     </div>
 </body>
 <script>
+    function createSessionId() {
+        return "session-" + Date.now() + "-" + Math.random().toString(36).substr(2, 9);
+    }
     async function convertDocumentToText() {
         try {
+            
             console.log("button worked")
             const content = document.getElementById("content");
             const fileInput = document.getElementById("file-input");
@@ -128,16 +132,21 @@
             }
 
             // can append "field name", "field value" to formData to simulate html forms
+            const sessionId = createSessionId();
+
             const formData = new FormData();
             formData.append("file", fileInput.files[0]);
+            formData.append("lang", "id"); // id, fp, my, bl, hd
+            formData.append("sessionId", sessionId);
 
             // dont need to set headers and JSONify the formData, browser deals with it
             // its not like you know what to do as well right?
-            const response = await fetch("http://127.0.0.1:8000/upload_files/", {
+            const response = await fetch("http://127.0.0.1:8000/summary/", {
                 method: "POST",
                 body: formData
             });
 
+            
             console.log("response worked")
 
             if (!response.ok) {
@@ -146,7 +155,7 @@
 
             // display text
             const result = await response.json();
-            document.getElementById("document-content").textContent = result.text;
+            document.getElementById("document-content").textContent = result.translated_doc;
             
             // display original file
             originalFile.innerHTML = "";

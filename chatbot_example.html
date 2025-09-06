@@ -183,7 +183,7 @@
                 this.sendButton = document.getElementById('sendButton');
                 this.loadingIndicator = document.getElementById('loadingIndicator');
                 this.sessionId = null;
-
+                this.last_message = ""
                 this.initializeEventListeners();
                 this.initializeChatbot();
             }
@@ -200,18 +200,21 @@
                     }
                 });
             }
-
+            createSessionId() {
+                return "session-" + Date.now() + "-" + Math.random().toString(36).substr(2, 9);
+            }
             async initializeChatbot() {
                 try {
                     this.showLoading();
-
+                    const sessionId = this.createSessionId()
+                    localStorage.setItem("sessionId", sessionId);
                     // Initialize chatbot session and get welcome message
                     const response = await fetch('http://127.0.0.1:8000/chatbot/init/', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({"lang": "id"})
+                        body: JSON.stringify({"lang": "id", "newSessionId": sessionId, "oldSessionId":""})
                     });
 
                     if (!response.ok) {
@@ -249,14 +252,16 @@
                     this.showLoading();
 
                     // Send message to backend
-                    const response = await fetch('http://127.0.0.1:8000/chatbot/message', {
+                    const response = await fetch('http://127.0.0.1:8000/chatbot/msg/', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
                             message: message,
-                            sessionId: this.sessionId
+                            lang: "id",
+                            last_message: this.last_message,
+                            sessionId: localStorage.getItem("sessionId")
                         })
                     });
 
@@ -268,6 +273,7 @@
 
                     // Add bot response to chat
                     this.addBotMessage(data.message);
+                    this.last_message = data.message
 
                 } catch (error) {
                     console.error('Error sending message:', error);

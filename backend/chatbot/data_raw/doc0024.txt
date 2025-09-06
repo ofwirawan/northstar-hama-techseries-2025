@@ -1,8 +1,0 @@
-Source: https://www.mom.gov.sg/passes-and-permits/work-permit-for-foreign-domestic-worker
-Accessed: 2025-09-05
-Title: MDW Work Permit hub
-Category: mdw
-HTTP: 200
-
-Notify MOM
-When to notify MOM, including changes in employer's information, address, MDW's passport details, pregnancy, death, missing MDW, provide a reference for your MDW, or if you would like to get a family member to act on your behalf on her matters.
