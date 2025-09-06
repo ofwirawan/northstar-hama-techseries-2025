@@ -117,6 +117,7 @@ const DragDrop = ({ isProcessingFile, setIsProcessingFile, handleFileParsed, cur
   }
 
   const upload = async () => {
+    console.log(currentLanguage, oldSessionId, newSessionId)
     if (!selectedFile) return;
 
     setIsProcessingFile(true);
@@ -130,7 +131,7 @@ const DragDrop = ({ isProcessingFile, setIsProcessingFile, handleFileParsed, cur
           'oldSessionId': oldSessionId,
           'newSessionId': newSessionId
         })})
-      
+    
 const formData = new FormData();
 formData.append("lang", currentLanguage || "id");
 formData.append("sessionId", localStorage.getItem("sessionId") || "");
